@@ -1,0 +1,80 @@
+.navbar {
+  width: 100%;
+  height: 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 28px;
+
+  /* IMPORTANT */
+  background: transparent;
+
+  position: relative;
+  z-index: 10;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.navbar-logo img {
+  width: 40px;
+  height: 40px;
+
+  object-fit: contain;
+}
+
+.navbar-logo p {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+
+/* =========================
+   GET STARTED BUTTON
+========================= */
+
+.navbar-button {
+  height: 50px;
+
+  padding: 0 28px;
+
+  border: none;
+  border-radius: 30px;
+
+  background: #ffffff;
+  color: #111111;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.navbar-button span {
+  margin-left: 10px;
+}
+
+.navbar-button:hover {
+  background: #eeeeee;
+}

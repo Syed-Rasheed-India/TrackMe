@@ -1,0 +1,176 @@
+.hero {
+  min-height: 600px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  padding-top: 70px;
+
+  position: relative;
+  z-index: 1;
+
+  /* IMPORTANT */
+  background: transparent;
+}
+
+
+/* =========================
+   BADGE
+========================= */
+
+.hero-badge {
+  display: flex;
+  align-items: center;
+
+  padding: 8px 16px;
+
+  border: 1px solid rgba(180, 150, 230, 0.35);
+
+  border-radius: 20px;
+
+  background: rgba(139, 92, 246, 0.10);
+
+  color: #c8b8e8;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+
+  margin-bottom: 52px;
+}
+
+
+/* =========================
+   MAIN HEADING
+========================= */
+
+.hero h1 {
+  margin: 0;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 52px;
+  line-height: 1.12;
+
+  font-weight: 600;
+
+  letter-spacing: -1.5px;
+
+  color: #f5f5f7;
+}
+
+
+/* =========================
+   COLORED WORDS
+========================= */
+
+.purple {
+  color: #a855f7;
+}
+
+.blue {
+  color: #3b82f6;
+}
+
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.hero-description {
+  margin-top: 24px;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 14px;
+  line-height: 1.7;
+
+  font-weight: 400;
+
+  color: #b5b2bd;
+}
+
+
+/* =========================
+   BUTTON CONTAINER
+========================= */
+
+.hero-buttons {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  margin-top: 44px;
+}
+
+
+/* =========================
+   GET STARTED
+========================= */
+
+.hero-get-started {
+  height: 54px;
+
+  padding: 0 38px;
+
+  border: none;
+  border-radius: 30px;
+
+  background: #ffffff;
+  color: #111111;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.hero-get-started span {
+  margin-left: 10px;
+}
+
+.hero-get-started:hover {
+  background: #eeeeee;
+}
+
+
+/* =========================
+   EXPLORE
+========================= */
+
+.hero-explore {
+  height: 54px;
+
+  padding: 0 38px;
+
+  border: 1px solid #3a3744;
+
+  border-radius: 30px;
+
+  background: transparent;
+
+  color: #d0ced6;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 13px;
+  font-weight: 400;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.hero-explore:hover {
+  border-color: #625d6d;
+
+  color: #ffffff;
+}
