@@ -1,0 +1,501 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+.focus-stats-section {
+  width: 100%;
+  padding: 60px 20px;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.focus-stats-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+
+  align-items: center;
+}
+
+/* =========================
+   COMMON CARD
+========================= */
+
+.focus-card {
+  position: relative;
+
+  width: 100%;
+  height: 220px;
+
+  padding: 22px 20px;
+  box-sizing: border-box;
+
+  background: #1b1a21;
+
+  border: 1px solid #292832;
+  border-radius: 18px;
+
+  color: white;
+
+  font-family: "Poppins", sans-serif;
+
+  overflow: hidden;
+}
+
+/* Subtle purple glow */
+
+.focus-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  top: -100px;
+  right: -40px;
+
+  background: rgba(142, 70, 255, 0.1);
+
+  filter: blur(45px);
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.card-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 13px;
+
+  color: #b4b1bd;
+
+  letter-spacing: 0.1px;
+}
+
+.card-icon {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 15px;
+}
+
+.purple-icon {
+  color: #c18cff;
+
+  background: rgba(145, 77, 255, 0.18);
+}
+
+.blue-icon {
+  color: #5798ff;
+
+  background: rgba(48, 117, 255, 0.15);
+}
+
+.dots {
+  color: #777381;
+
+  font-size: 15px;
+
+  letter-spacing: 3px;
+}
+
+/* =========================
+   CARD 1
+========================= */
+
+.percentage {
+  margin-top: 18px;
+
+  font-size: 32px;
+
+  line-height: 1;
+
+  font-weight: 600;
+}
+
+.increase {
+  margin-top: 7px;
+
+  font-size: 11px;
+
+  color: #5a9cff;
+}
+
+/* Weekly bars */
+
+.weekly-chart {
+  height: 70px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  margin-top: 12px;
+
+  padding: 0 2px;
+}
+
+.bar {
+  width: 12%;
+
+  max-width: 32px;
+
+  background: #4a4852;
+
+  border-radius: 3px 3px 0 0;
+}
+
+.bar.active {
+  background: linear-gradient(
+    to top,
+    #7d40d9,
+    #9b59ff
+  );
+}
+
+.days {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 6px;
+
+  padding: 0 3px;
+
+  color: #65616d;
+
+  font-size: 10px;
+}
+
+/* =========================
+   CARD 2
+========================= */
+
+.progress-card {
+  height: 240px;
+
+  border-color: #44236c;
+
+  background:
+    radial-gradient(
+      circle at 75% 0%,
+      rgba(128, 57, 220, 0.28),
+      transparent 35%
+    ),
+    #1b1a21;
+
+  box-shadow:
+    0 0 30px rgba(125, 53, 220, 0.15);
+}
+
+.progress-score {
+  margin-top: 18px;
+
+  font-size: 40px;
+
+  line-height: 1;
+
+  font-weight: 600;
+}
+
+.top-badge {
+  display: inline-block;
+
+  margin-top: 7px;
+
+  padding: 4px 9px;
+
+  border-radius: 12px;
+
+  font-size: 10px;
+
+  color: #8b6cff;
+
+  background: rgba(91, 55, 180, 0.2);
+
+  border: 1px solid rgba(108, 65, 211, 0.25);
+}
+
+/* Monthly chart */
+
+.monthly-chart {
+  position: absolute;
+
+  left: 20px;
+  right: 20px;
+
+  bottom: 14px;
+
+  height: 105px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-around;
+}
+
+.month-column {
+  position: relative;
+
+  width: 50px;
+
+  height: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: flex-end;
+}
+
+.month-bar {
+  width: 28px;
+
+  background: #24232b;
+
+  border-radius: 14px;
+
+  position: relative;
+}
+
+.month-column span {
+  margin-top: 7px;
+
+  font-size: 10px;
+
+  color: #65616d;
+}
+
+.active-month .month-bar {
+  background: linear-gradient(
+    to top,
+    #9147ed,
+    #a65aff
+  );
+
+  box-shadow:
+    0 0 20px rgba(157, 82, 255, 0.4);
+}
+
+.score-label {
+  position: absolute;
+
+  bottom: 85px;
+
+  padding: 4px 7px;
+
+  border-radius: 4px;
+
+  background: white;
+
+  color: #18161d;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+/* =========================
+   CARD 3
+========================= */
+
+.revision-percentage {
+  margin-top: 18px;
+
+  font-size: 32px;
+
+  line-height: 1;
+
+  font-weight: 600;
+}
+
+.goal-text {
+  margin-top: 7px;
+
+  font-size: 10px;
+
+  color: #6e6a76;
+}
+
+.progress-label {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 22px;
+
+  font-size: 10px;
+
+  color: #9995a0;
+}
+
+.progress-label span:last-child {
+  color: #aaa6b1;
+}
+
+.progress-track {
+  width: 100%;
+
+  height: 13px;
+
+  margin-top: 8px;
+
+  border-radius: 10px;
+
+  background: #292832;
+
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: relative;
+
+  width: 76%;
+
+  height: 100%;
+
+  border-radius: 10px;
+
+  background: linear-gradient(
+    90deg,
+    #2f6fe8,
+    #5799ff
+  );
+}
+
+.progress-dot {
+  position: absolute;
+
+  width: 7px;
+  height: 7px;
+
+  right: 4px;
+  top: 3px;
+
+  border-radius: 50%;
+
+  background: #c5dcff;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+  .focus-stats-container {
+    gap: 16px;
+  }
+
+  .focus-card {
+    padding: 20px 18px;
+  }
+
+  .card-header {
+    font-size: 12px;
+  }
+
+  .percentage,
+  .revision-percentage {
+    font-size: 29px;
+  }
+
+  .progress-score {
+    font-size: 36px;
+  }
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+  .focus-stats-container {
+    grid-template-columns: 1fr;
+
+    max-width: 600px;
+  }
+
+  .focus-card,
+  .progress-card {
+    height: 220px;
+  }
+
+  .progress-card {
+    height: 240px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+  .focus-stats-section {
+    padding: 35px 14px;
+  }
+
+  .focus-card,
+  .progress-card {
+    height: 210px;
+
+    padding: 18px 16px;
+
+    border-radius: 16px;
+  }
+
+  .card-header {
+    font-size: 11px;
+  }
+
+  .card-icon {
+    width: 27px;
+    height: 27px;
+
+    font-size: 13px;
+  }
+
+  .percentage,
+  .revision-percentage {
+    font-size: 28px;
+  }
+
+  .progress-score {
+    font-size: 34px;
+  }
+
+  .increase {
+    font-size: 10px;
+  }
+
+  .goal-text,
+  .progress-label {
+    font-size: 9px;
+  }
+
+  .weekly-chart {
+    height: 65px;
+  }
+}
