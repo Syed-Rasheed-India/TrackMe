@@ -1,6 +1,8 @@
 import "./Hero.css";
+import { useNavigate } from "react-router-dom";
 
 function Hero() {
+  let navigate = useNavigate();
   return (
     <main className="hero">
 
@@ -29,7 +31,7 @@ function Hero() {
       {/* Buttons */}
       <div className="hero-buttons">
 
-        <button className="hero-get-started">
+        <button className="hero-get-started" onClick={()=>navigate("/signup")}>
           Get Started
           <span>→</span>
         </button>
