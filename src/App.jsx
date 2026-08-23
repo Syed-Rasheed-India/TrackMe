@@ -6,6 +6,7 @@ import FocusStats from "./components/FocusStats";
 import Footer from "./components/Footer";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
+import Pomodoro from "./components/Pomodoro";
 function Home() {
   return (
     <div className="app">
@@ -24,7 +25,7 @@ function App(){
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-
+            <Route path="/pomodoro" element={<Pomodoro/>}></Route>
         </Routes>
 
     </BrowserRouter>

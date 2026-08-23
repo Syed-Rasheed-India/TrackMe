@@ -121,7 +121,7 @@ state and conquer today's goals.
 
           {/* LOGIN BUTTON */}
 
-          <button className="login-button">
+          <button className="login-button" onClick={()=>navigate("/pomodoro")}>
 
             <span>Login</span>
 

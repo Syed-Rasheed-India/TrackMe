@@ -107,7 +107,7 @@ const Signup = () => {
 
 
           {/* Signup Button */}
-          <button className="signup-button">
+          <button className="signup-button" onClick={()=>LoginNavigate("/pomodoro")}>
             <span>Sign Up</span>
             <span className="arrow">→</span>
           </button>
