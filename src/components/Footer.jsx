@@ -1,28 +1,55 @@
 import React from 'react'
-import './Footer.css';
+import './Footer.css'
 
 function Footer() {
   return (
-    <div className="footer">
-        <div className="navbar-logo">
-            <img
+    <footer className="footer">
+
+      {/* LOGO */}
+      <div className="navbar-logo">
+
+        <img
           src="/LogoV1TrackMe.png"
           alt="TrackMe logo"
         />
 
-            <p>TrackMe</p>
-        </div>
-        <div className="options">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms and Conditions</a>
-            <a href="#">Contact Us</a>
-            <a href="#">Blog</a>
-        </div>
-        <div className="copyright">
-            <p>© 2024 TrackMe.AI. All rights reserved.</p>
-        </div>
+        <p>TrackMe</p>
 
-    </div>
+      </div>
+
+
+      {/* LINKS */}
+      <nav className="options">
+
+        <a href="/privacy-policy">
+          Privacy Policy
+        </a>
+
+        <a href="/terms">
+          Terms & Conditions
+        </a>
+
+        <a href="/contact">
+          Contact Us
+        </a>
+
+        <a href="/blog">
+          Blog
+        </a>
+
+      </nav>
+
+
+      {/* COPYRIGHT */}
+      <div className="copyright">
+
+        <p>
+          © 2024 TrackMe.AI. All rights reserved.
+        </p>
+
+      </div>
+
+    </footer>
   )
 }
 

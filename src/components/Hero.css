@@ -1,5 +1,12 @@
+/* =========================
+   HERO
+========================= */
+
 .hero {
+  width: 100%;
   min-height: 600px;
+
+  box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
@@ -7,12 +14,11 @@
 
   text-align: center;
 
-  padding-top: 70px;
+  padding: 70px 24px 60px;
 
   position: relative;
   z-index: 1;
 
-  /* IMPORTANT */
   background: transparent;
 }
 
@@ -24,11 +30,11 @@
 .hero-badge {
   display: flex;
   align-items: center;
+  justify-content: center;
 
   padding: 8px 16px;
 
   border: 1px solid rgba(180, 150, 230, 0.35);
-
   border-radius: 20px;
 
   background: rgba(139, 92, 246, 0.10);
@@ -36,10 +42,13 @@
   color: #c8b8e8;
 
   font-family: "Poppins", sans-serif;
+
   font-size: 12px;
   font-weight: 500;
 
   margin-bottom: 52px;
+
+  white-space: nowrap;
 }
 
 
@@ -48,6 +57,8 @@
 ========================= */
 
 .hero h1 {
+  max-width: 1000px;
+
   margin: 0;
 
   font-family: "Poppins", sans-serif;
@@ -81,7 +92,9 @@
 ========================= */
 
 .hero-description {
-  margin-top: 24px;
+  max-width: 850px;
+
+  margin: 24px auto 0;
 
   font-family: "Poppins", sans-serif;
 
@@ -101,6 +114,7 @@
 .hero-buttons {
   display: flex;
   align-items: center;
+  justify-content: center;
 
   gap: 16px;
 
@@ -113,14 +127,16 @@
 ========================= */
 
 .hero-get-started {
+  min-width: 165px;
   height: 54px;
 
-  padding: 0 38px;
+  padding: 0 30px;
 
   border: none;
   border-radius: 30px;
 
   background: #ffffff;
+
   color: #111111;
 
   font-family: "Poppins", sans-serif;
@@ -135,10 +151,14 @@
 
 .hero-get-started span {
   margin-left: 10px;
+
+  font-size: 16px;
 }
 
 .hero-get-started:hover {
   background: #eeeeee;
+
+  transform: translateY(-2px);
 }
 
 
@@ -147,12 +167,12 @@
 ========================= */
 
 .hero-explore {
+  min-width: 165px;
   height: 54px;
 
-  padding: 0 38px;
+  padding: 0 30px;
 
   border: 1px solid #3a3744;
-
   border-radius: 30px;
 
   background: transparent;
@@ -173,4 +193,272 @@
   border-color: #625d6d;
 
   color: #ffffff;
+
+  transform: translateY(-2px);
+}
+
+
+/* ==================================================
+   LARGE TABLET
+================================================== */
+
+@media (max-width: 1100px) {
+
+  .hero {
+    padding-top: 65px;
+  }
+
+  .hero h1 {
+    max-width: 850px;
+
+    font-size: 46px;
+
+    letter-spacing: -1.2px;
+  }
+
+  .hero-description {
+    max-width: 750px;
+
+    font-size: 13px;
+  }
+
+}
+
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 768px) {
+
+  .hero {
+    min-height: auto;
+
+    padding: 60px 24px 70px;
+  }
+
+
+  /* BADGE */
+
+  .hero-badge {
+    margin-bottom: 35px;
+
+    font-size: 11px;
+
+    padding: 7px 14px;
+  }
+
+
+  /* HEADING */
+
+  .hero h1 {
+    max-width: 650px;
+
+    font-size: 38px;
+
+    line-height: 1.18;
+
+    letter-spacing: -1px;
+  }
+
+
+  /* DESCRIPTION */
+
+  .hero-description {
+    max-width: 600px;
+
+    margin-top: 20px;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+  }
+
+
+  /* BUTTONS */
+
+  .hero-buttons {
+    margin-top: 35px;
+
+    gap: 12px;
+  }
+
+  .hero-get-started,
+  .hero-explore {
+    min-width: 145px;
+
+    height: 50px;
+
+    padding: 0 24px;
+
+    font-size: 12px;
+  }
+
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 600px) {
+
+  .hero {
+    min-height: auto;
+
+    padding: 50px 20px 60px;
+  }
+
+
+  /* BADGE */
+
+  .hero-badge {
+    margin-bottom: 30px;
+
+    padding: 7px 13px;
+
+    font-size: 10px;
+  }
+
+
+  /* HEADING */
+
+  .hero h1 {
+    max-width: 500px;
+
+    font-size: 32px;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.8px;
+  }
+
+
+  /* DESCRIPTION */
+
+  .hero-description {
+    max-width: 480px;
+
+    margin-top: 18px;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+  }
+
+
+  /* BUTTONS */
+
+  .hero-buttons {
+    width: 100%;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin-top: 30px;
+  }
+
+
+  .hero-get-started,
+  .hero-explore {
+    width: 100%;
+    max-width: 280px;
+
+    height: 50px;
+  }
+
+}
+
+
+/* ==================================================
+   SMALL MOBILE
+================================================== */
+
+@media (max-width: 400px) {
+
+  .hero {
+    padding: 45px 16px 55px;
+  }
+
+
+  /* BADGE */
+
+  .hero-badge {
+    margin-bottom: 25px;
+
+    padding: 6px 11px;
+
+    font-size: 9px;
+  }
+
+
+  /* HEADING */
+
+  .hero h1 {
+    font-size: 27px;
+
+    line-height: 1.22;
+
+    letter-spacing: -0.5px;
+  }
+
+
+  /* DESCRIPTION */
+
+  .hero-description {
+    margin-top: 16px;
+
+    font-size: 11px;
+
+    line-height: 1.65;
+  }
+
+
+  /* BUTTONS */
+
+  .hero-buttons {
+    margin-top: 26px;
+  }
+
+
+  .hero-get-started,
+  .hero-explore {
+    max-width: 260px;
+
+    height: 48px;
+
+    font-size: 11px;
+  }
+
+}
+
+
+/* ==================================================
+   VERY SMALL PHONES
+================================================== */
+
+@media (max-width: 320px) {
+
+  .hero {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+
+  .hero h1 {
+    font-size: 24px;
+  }
+
+
+  .hero-description {
+    font-size: 10px;
+  }
+
+
+  .hero-get-started,
+  .hero-explore {
+    max-width: 240px;
+  }
+
 }
