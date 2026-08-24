@@ -1,23 +1,60 @@
-/* =========================
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-width: 0;
+
+  background: #0b0a12;
+  font-family: Arial, sans-serif;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+
+/* =========================================================
    MAIN CONTAINER
-========================= */
+========================================================= */
 
 .container {
   width: 100%;
   min-height: 100vh;
+
   background: #0b0a12;
+
   display: flex;
   flex-direction: column;
+
   color: white;
+
+  overflow-x: hidden;
 }
 
 
-/* =========================
+/* =========================================================
    NAVBAR
-========================= */
+========================================================= */
 
 .navbar {
-  height: 50px;
+  width: 100%;
+  min-height: 50px;
 
   display: flex;
   align-items: center;
@@ -25,12 +62,14 @@
 
   gap: 32px;
 
+  padding: 0 20px;
+
   background: #0b0a12;
   border-bottom: 1px solid #1c1a24;
 }
 
 .navbar a {
-  height: 100%;
+  height: 50px;
 
   display: flex;
   align-items: center;
@@ -42,6 +81,8 @@
 
   font-size: 15px;
   font-weight: 400;
+
+  white-space: nowrap;
 
   transition: color 0.2s ease;
 }
@@ -72,22 +113,20 @@
 }
 
 
-/* =========================
+/* =========================================================
    DASHBOARD HEADER
-========================= */
+========================================================= */
 
 .dashboard-header {
   width: calc(100% - 48px);
-  height: 65px;
+  min-height: 65px;
 
   margin: 15px auto 0;
 
-  padding: 0 16px;
+  padding: 10px 16px;
 
   display: flex;
   align-items: center;
-
-  box-sizing: border-box;
 
   background: #111019;
 
@@ -98,9 +137,9 @@
 }
 
 
-/* =========================
+/* =========================================================
    BRAND
-========================= */
+========================================================= */
 
 .brand {
   min-width: 230px;
@@ -122,6 +161,8 @@
   border-radius: 50%;
 
   background: #8b5cf6;
+
+  flex-shrink: 0;
 }
 
 .brand-logo img {
@@ -139,9 +180,9 @@
 }
 
 
-/* =========================
+/* =========================================================
    GREETING
-========================= */
+========================================================= */
 
 .greeting {
   flex: 1;
@@ -149,6 +190,8 @@
   text-align: center;
 
   line-height: 1.2;
+
+  min-width: 0;
 }
 
 .greeting h3 {
@@ -169,9 +212,9 @@
 }
 
 
-/* =========================
+/* =========================================================
    HEADER RIGHT
-========================= */
+========================================================= */
 
 .header-right {
   min-width: 230px;
@@ -193,6 +236,8 @@
   color: #aaa6b4;
 
   font-size: 10px;
+
+  white-space: nowrap;
 }
 
 .profile {
@@ -200,6 +245,8 @@
   align-items: center;
 
   gap: 7px;
+
+  white-space: nowrap;
 }
 
 .profile-image {
@@ -215,6 +262,8 @@
   background: #292633;
 
   font-size: 14px;
+
+  flex-shrink: 0;
 }
 
 .profile span {
@@ -224,9 +273,9 @@
 }
 
 
-/* =========================
+/* =========================================================
    TASK LIST
-========================= */
+========================================================= */
 
 .taskList {
   width: calc(100% - 48px);
@@ -242,9 +291,9 @@
 }
 
 
-/* =========================
+/* =========================================================
    TASK HEADER
-========================= */
+========================================================= */
 
 .taskhead {
   min-height: 75px;
@@ -255,7 +304,13 @@
 
   padding: 0 18px;
 
+  gap: 20px;
+
   border-bottom: 1px solid #292633;
+}
+
+.t-tile {
+  min-width: 0;
 }
 
 .t-tile h4 {
@@ -275,11 +330,6 @@
   font-size: 12px;
 }
 
-
-/* =========================
-   ADD TASK BUTTON
-========================= */
-
 .taskhead button {
   padding: 11px 18px;
 
@@ -295,6 +345,8 @@
 
   cursor: pointer;
 
+  white-space: nowrap;
+
   transition: 0.2s ease;
 }
 
@@ -305,13 +357,12 @@
 }
 
 
-/* =========================
-   TABLE HEADER
-========================= */
+/* =========================================================
+   TASK TABLE
+========================================================= */
 
-.taskbody {
-  min-height: 48px;
-
+.taskbody,
+.task-row {
   display: grid;
 
   grid-template-columns:
@@ -325,9 +376,13 @@
 
   align-items: center;
 
-  padding: 0 18px;
+  min-width: 750px;
+}
 
-  box-sizing: border-box;
+.taskbody {
+  min-height: 48px;
+
+  padding: 0 18px;
 
   border-bottom: 1px solid #292633;
 }
@@ -344,33 +399,23 @@
 }
 
 
-/* =========================
-   TASK ROW
-========================= */
+/* =========================================================
+   TASK MEMBERS
+========================================================= */
 
 .taskmembers {
   width: 100%;
+
+  overflow-x: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: #3d3749 #111019;
 }
 
 .task-row {
   min-height: 52px;
 
-  display: grid;
-
-  grid-template-columns:
-    2fr
-    1.3fr
-    0.9fr
-    1fr
-    1.1fr
-    1fr
-    0.7fr;
-
-  align-items: center;
-
   padding: 0 18px;
-
-  box-sizing: border-box;
 
   border-bottom: 1px solid #292633;
 
@@ -383,10 +428,13 @@
   border-bottom: none;
 }
 
+.task-row > span {
+  min-width: 0;
 
-/* =========================
-   TASK NAME
-========================= */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .task-row > span:first-child {
   color: #d3cfd9;
@@ -395,9 +443,9 @@
 }
 
 
-/* =========================
+/* =========================================================
    PROGRESS
-========================= */
+========================================================= */
 
 .progress-container {
   display: flex;
@@ -416,6 +464,8 @@
   background: #292731;
 
   overflow: hidden;
+
+  flex-shrink: 0;
 }
 
 .progress-fill {
@@ -435,9 +485,9 @@
 }
 
 
-/* =========================
+/* =========================================================
    STATUS
-========================= */
+========================================================= */
 
 .status {
   display: inline-block;
@@ -449,10 +499,9 @@
   font-size: 10px;
 
   border: 1px solid #3d3749;
+
+  white-space: nowrap;
 }
-
-
-/* PENDING */
 
 .status.pending {
   color: #aaa5b0;
@@ -462,9 +511,6 @@
   border-color: #3d3749;
 }
 
-
-/* IN PROGRESS */
-
 .status.in-progress {
   color: #b993ff;
 
@@ -472,9 +518,6 @@
 
   background: #211a2d;
 }
-
-
-/* COMPLETED */
 
 .status.completed {
   color: #c18cff;
@@ -485,9 +528,9 @@
 }
 
 
-/* =========================
+/* =========================================================
    ACTION
-========================= */
+========================================================= */
 
 .actions {
   color: #85808b;
@@ -504,14 +547,16 @@
 }
 
 
-/* =========================
-   MODAL OVERLAY
-========================= */
+/* =========================================================
+   MODAL
+========================================================= */
 
 .modal-overlay {
   position: fixed;
 
   inset: 0;
+
+  padding: 20px;
 
   display: flex;
 
@@ -523,19 +568,15 @@
   backdrop-filter: blur(4px);
 
   z-index: 1000;
+
+  overflow-y: auto;
 }
-
-
-/* =========================
-   ADD TASK CARD
-========================= */
 
 .add-task-card {
   width: 420px;
+  max-width: 100%;
 
   padding: 25px;
-
-  box-sizing: border-box;
 
   background: #15131d;
 
@@ -549,31 +590,17 @@
   animation: cardOpen 0.2s ease;
 }
 
-
-/* =========================
-   MODAL ANIMATION
-========================= */
-
 @keyframes cardOpen {
-
   from {
     opacity: 0;
-
     transform: translateY(10px) scale(0.97);
   }
 
   to {
     opacity: 1;
-
     transform: translateY(0) scale(1);
   }
-
 }
-
-
-/* =========================
-   MODAL HEADER
-========================= */
 
 .add-task-header {
   display: flex;
@@ -581,6 +608,8 @@
   align-items: flex-start;
 
   justify-content: space-between;
+
+  gap: 15px;
 
   margin-bottom: 25px;
 }
@@ -603,11 +632,6 @@
   font-size: 12px;
 }
 
-
-/* =========================
-   CLOSE BUTTON
-========================= */
-
 .close-btn {
   border: none;
 
@@ -620,6 +644,8 @@
   cursor: pointer;
 
   line-height: 1;
+
+  flex-shrink: 0;
 }
 
 .close-btn:hover {
@@ -627,9 +653,9 @@
 }
 
 
-/* =========================
+/* =========================================================
    FORM
-========================= */
+========================================================= */
 
 .form-group {
   margin-bottom: 20px;
@@ -647,12 +673,9 @@
 
 .form-group input {
   width: 100%;
-
   height: 44px;
 
   padding: 0 13px;
-
-  box-sizing: border-box;
 
   background: #0f0e15;
 
@@ -665,8 +688,6 @@
   color: #eeeaf2;
 
   font-size: 13px;
-
-  transition: 0.2s ease;
 }
 
 .form-group input::placeholder {
@@ -680,20 +701,13 @@
     0 0 0 2px rgba(139, 92, 246, 0.12);
 }
 
-
-/* =========================
-   CREATE TASK BUTTON
-========================= */
-
 .create-task-btn {
   width: 100%;
-
   height: 44px;
 
   margin-top: 5px;
 
   border: none;
-
   border-radius: 7px;
 
   background: #9b5cff;
@@ -705,8 +719,6 @@
   font-weight: 500;
 
   cursor: pointer;
-
-  transition: 0.2s ease;
 }
 
 .create-task-btn:hover {
@@ -714,27 +726,28 @@
 }
 
 
-/* copy */
-/* =========================
+/* =========================================================
    FOCUS TIMER
-========================= */
+========================================================= */
 
 .focus-timer {
   width: calc(100% - 48px);
-  margin: 24px auto 0;
+
+  margin: 24px auto 30px;
 
   background: #111019;
 
   border: 1px solid #292633;
+
   border-radius: 10px;
 
   overflow: hidden;
 }
 
 
-/* =========================
-   HEADER
-========================= */
+/* =========================================================
+   TIMER HEADER
+========================================================= */
 
 .focus-header {
   padding: 18px 20px 14px;
@@ -760,35 +773,39 @@
 }
 
 
-/* =========================
-   CONTENT
-========================= */
+/* =========================================================
+   TIMER CONTENT
+========================================================= */
 
 .timer-content {
   display: grid;
 
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: minmax(220px, 1fr) minmax(300px, 1.2fr);
 
-  gap: 45px;
+  gap: 60px;
 
-  padding: 30px 24px;
+  padding: 40px;
 
   align-items: center;
 }
 
 
-/* =========================
-   LEFT
-========================= */
+/* =========================================================
+   TIMER LEFT
+========================================================= */
 
 .timer-left {
   display: flex;
 
   flex-direction: column;
+
+  width: 100%;
+
+  min-width: 0;
 }
 
 .timer-field {
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
 .timer-field label {
@@ -798,20 +815,20 @@
 
   color: #817b89;
 
-  font-size: 10px;
+  font-size: 11px;
 
   letter-spacing: 0.7px;
 }
 
 
-/* =========================
+/* =========================================================
    SELECT
-========================= */
+========================================================= */
 
 .timer-field select {
   width: 100%;
 
-  height: 40px;
+  height: 44px;
 
   padding: 0 12px;
 
@@ -825,7 +842,7 @@
 
   color: #c9c5d0;
 
-  font-size: 12px;
+  font-size: 13px;
 
   cursor: pointer;
 }
@@ -835,18 +852,20 @@
 }
 
 
-/* =========================
+/* =========================================================
    PRESETS
-========================= */
+========================================================= */
 
 .preset-buttons {
   display: flex;
+
+  flex-wrap: wrap;
 
   gap: 9px;
 }
 
 .preset-buttons button {
-  padding: 8px 13px;
+  padding: 9px 14px;
 
   border: 1px solid #35313e;
 
@@ -856,7 +875,7 @@
 
   color: #aaa5b2;
 
-  font-size: 11px;
+  font-size: 12px;
 
   cursor: pointer;
 
@@ -878,16 +897,16 @@
 }
 
 
-/* =========================
+/* =========================================================
    START BUTTON
-========================= */
+========================================================= */
 
 .start-focus-btn {
   width: 100%;
 
-  height: 42px;
+  height: 46px;
 
-  margin-top: 15px;
+  margin-top: 5px;
 
   border: none;
 
@@ -911,9 +930,9 @@
 }
 
 
-/* =========================
-   CENTER
-========================= */
+/* =========================================================
+   TIMER CENTER
+========================================================= */
 
 .timer-center {
   display: flex;
@@ -923,16 +942,18 @@
   align-items: center;
 
   justify-content: center;
+
+  min-width: 0;
 }
 
 
-/* =========================
+/* =========================================================
    TIMER CIRCLE
-========================= */
+========================================================= */
 
 .timer-circle {
-  width: 160px;
-  height: 160px;
+  width: 240px;
+  height: 240px;
 
   display: flex;
 
@@ -941,16 +962,16 @@
 
   border-radius: 50%;
 
-  border: 6px solid #9b5cff;
+  border: 8px solid #9b5cff;
 
   box-shadow:
-    0 0 22px rgba(155, 92, 255, 0.16);
+    0 0 30px rgba(155, 92, 255, 0.16);
 }
 
 
-/* =========================
+/* =========================================================
    TIMER
-========================= */
+========================================================= */
 
 .timer-inside {
   text-align: center;
@@ -959,13 +980,13 @@
 .timer-label {
   display: block;
 
-  margin-bottom: 7px;
+  margin-bottom: 8px;
 
   color: #b8a5db;
 
-  font-size: 10px;
+  font-size: 13px;
 
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 .timer-number {
@@ -975,42 +996,44 @@
 
   color: #e8e3ef;
 
-  font-size: 34px;
+  font-size: 48px;
 
   font-weight: 500;
 
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 
 
-/* =========================
-   MESSAGE
-========================= */
+/* =========================================================
+   TIMER MESSAGE
+========================================================= */
 
 .timer-message {
-  margin: 12px 0 10px;
+  margin: 16px 0 12px;
 
   color: #8b8693;
 
-  font-size: 11px;
+  font-size: 13px;
 }
 
 
-/* =========================
-   CONTROLS
-========================= */
+/* =========================================================
+   TIMER CONTROLS
+========================================================= */
 
 .timer-controls {
   display: flex;
 
   align-items: center;
 
-  gap: 12px;
+  justify-content: center;
+
+  gap: 14px;
 }
 
 .control-btn {
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
 
   display: flex;
 
@@ -1027,7 +1050,7 @@
 
   cursor: pointer;
 
-  font-size: 15px;
+  font-size: 18px;
 
   transition: 0.2s;
 }
@@ -1041,13 +1064,13 @@
 }
 
 
-/* =========================
-   PLAY BUTTON
-========================= */
+/* =========================================================
+   PLAY
+========================================================= */
 
 .play-btn {
-  width: 42px;
-  height: 42px;
+  width: 52px;
+  height: 52px;
 
   border: none;
 
@@ -1055,7 +1078,7 @@
 
   color: white;
 
-  font-size: 17px;
+  font-size: 21px;
 }
 
 .play-btn:hover {
@@ -1063,154 +1086,462 @@
 }
 
 
-/* =========================
-   STOP BUTTON
-========================= */
+/* =========================================================
+   STOP
+========================================================= */
 
 .stop-btn {
-  font-size: 13px;
+  font-size: 15px;
 }
 
 
-/* =========================
-   RESET BUTTON
-========================= */
+/* =========================================================
+   RESET
+========================================================= */
 
 .reset-btn {
-  font-size: 19px;
+  font-size: 23px;
 }
 
 
-/* =========================
-   SESSION OVERVIEW
-========================= */
+/* =========================================================
+   TABLET
+========================================================= */
 
-.session-overview {
-  height: 100%;
+@media (max-width: 1000px) {
 
-  display: flex;
+  .dashboard-header {
+    width: calc(100% - 32px);
+  }
 
-  flex-direction: column;
-}
+  .taskList,
+  .focus-timer {
+    width: calc(100% - 32px);
+  }
 
-.session-overview h3 {
-  margin: 0 0 10px;
+  .brand {
+    min-width: 180px;
+  }
 
-  padding-bottom: 9px;
+  .header-right {
+    min-width: 180px;
 
-  border-bottom: 1px solid #292633;
+    gap: 8px;
+  }
 
-  color: #d8d4dd;
+  .greeting h3 {
+    font-size: 14px;
+  }
 
-  font-size: 14px;
+  .timer-content {
+    grid-template-columns: 1fr 1fr;
 
-  font-weight: 500;
-}
+    gap: 35px;
 
+    padding: 35px 25px;
+  }
 
-/* =========================
-   OVERVIEW CARD
-========================= */
+  .timer-circle {
+    width: 210px;
+    height: 210px;
+  }
 
-.overview-card {
-  min-height: 45px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  padding: 0 13px;
-
-  margin-bottom: 9px;
-
-  background: #1c1a23;
-
-  border: 1px solid #302d38;
-
-  border-radius: 6px;
-}
-
-.overview-card span {
-  color: #817b89;
-
-  font-size: 10px;
-}
-
-.overview-card strong {
-  color: #d8d3df;
-
-  font-size: 15px;
-
-  font-weight: 500;
+  .timer-number {
+    font-size: 43px;
+  }
 }
 
 
-/* =========================
-   KEEP GOING
-========================= */
+/* =========================================================
+   TABLET / SMALL LAPTOP
+========================================================= */
 
-.keep-going {
-  margin: auto 0 0;
+@media (max-width: 800px) {
 
-  text-align: center;
+  .dashboard-header {
+    min-height: auto;
 
-  color: #8d8796;
+    padding: 15px;
 
-  font-size: 10px;
-}
+    flex-wrap: wrap;
 
+    gap: 15px;
+  }
 
-/* =========================
-   RESPONSIVE
-========================= */
+  .brand {
+    min-width: auto;
+  }
 
-@media (max-width: 900px) {
+  .greeting {
+    order: 3;
+
+    flex-basis: 100%;
+  }
+
+  .header-right {
+    margin-left: auto;
+
+    min-width: auto;
+  }
 
   .timer-content {
     grid-template-columns: 1fr;
 
-    gap: 25px;
+    gap: 40px;
+
+    padding: 35px 25px;
   }
 
   .timer-center {
     order: -1;
   }
 
-  .timer-left,
-  .session-overview {
-    width: 100%;
-  }
-
-}
-
-
-/* =========================
-   SMALL MOBILE
-========================= */
-
-@media (max-width: 500px) {
-
-  .focus-timer {
-    width: calc(100% - 24px);
-  }
-
-  .timer-content {
-    padding: 25px 16px;
-  }
-
   .timer-circle {
-    width: 145px;
-    height: 145px;
+    width: 230px;
+    height: 230px;
   }
 
   .timer-number {
-    font-size: 31px;
+    font-size: 46px;
+  }
+
+  .timer-left {
+    max-width: 500px;
+
+    margin: auto;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  /* NAVBAR */
+
+  .navbar {
+    min-height: 55px;
+
+    gap: 0;
+
+    justify-content: space-around;
+
+    padding: 0 8px;
+  }
+
+  .navbar a {
+    height: 55px;
+
+    font-size: 12px;
+  }
+
+
+  /* HEADER */
+
+  .dashboard-header {
+    width: calc(100% - 20px);
+
+    margin-top: 10px;
+
+    padding: 14px;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 12px;
+  }
+
+  .brand {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+  .brand span {
+    font-size: 18px;
+  }
+
+  .greeting {
+    order: initial;
+
+    width: 100%;
+  }
+
+  .greeting h3 {
+    font-size: 14px;
+  }
+
+  .greeting p {
+    font-size: 10px;
+  }
+
+  .header-right {
+    width: 100%;
+
+    justify-content: center;
+
+    min-width: 0;
+  }
+
+  .date {
+    font-size: 10px;
+  }
+
+
+  /* TASK */
+
+  .taskList {
+    width: calc(100% - 20px);
+
+    margin-top: 15px;
+  }
+
+  .taskhead {
+    min-height: auto;
+
+    padding: 16px;
+
+    align-items: flex-start;
+  }
+
+  .t-tile h4 {
+    font-size: 16px;
+  }
+
+  .t-tile p {
+    font-size: 10px;
+
+    line-height: 1.4;
+  }
+
+  .taskhead button {
+    padding: 9px 12px;
+
+    font-size: 10px;
+  }
+
+
+  /* TABLE */
+
+  .taskbody {
+    overflow-x: auto;
+
+    min-width: 750px;
+  }
+
+  .taskmembers {
+    overflow-x: auto;
+  }
+
+  .task-row {
+    min-height: 55px;
+  }
+
+
+  /* MODAL */
+
+  .modal-overlay {
+    padding: 15px;
+  }
+
+  .add-task-card {
+    width: 100%;
+
+    padding: 20px;
+  }
+
+  .add-task-header h2 {
+    font-size: 19px;
+  }
+
+
+  /* TIMER */
+
+  .focus-timer {
+    width: calc(100% - 20px);
+
+    margin-top: 15px;
+  }
+
+  .focus-header {
+    padding: 16px;
+  }
+
+  .focus-header h2 {
+    font-size: 17px;
+  }
+
+  .focus-header p {
+    font-size: 10px;
+
+    line-height: 1.5;
+  }
+
+  .timer-content {
+    padding: 30px 18px;
+
+    gap: 35px;
+  }
+
+  .timer-circle {
+    width: 200px;
+    height: 200px;
+
+    border-width: 7px;
+  }
+
+  .timer-number {
+    font-size: 40px;
+  }
+
+  .timer-label {
+    font-size: 11px;
+  }
+
+  .timer-message {
+    font-size: 11px;
+  }
+
+  .timer-controls {
+    gap: 12px;
+  }
+
+  .control-btn {
+    width: 40px;
+    height: 40px;
+
+    font-size: 17px;
+  }
+
+  .play-btn {
+    width: 50px;
+    height: 50px;
+
+    font-size: 20px;
+  }
+
+  .timer-left {
+    width: 100%;
+  }
+
+  .preset-buttons button {
+    font-size: 11px;
+
+    padding: 8px 11px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .navbar {
+    gap: 0;
+  }
+
+  .navbar a {
+    font-size: 10px;
+  }
+
+  .brand span {
+    font-size: 17px;
+  }
+
+  .greeting h3 {
+    font-size: 13px;
+  }
+
+  .header-right {
+    flex-direction: column;
+
+    gap: 7px;
+  }
+
+  .taskhead {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 12px;
+  }
+
+  .taskhead button {
+    width: 100%;
+  }
+
+  .timer-circle {
+    width: 175px;
+    height: 175px;
+
+    border-width: 6px;
+  }
+
+  .timer-number {
+    font-size: 34px;
+
+    letter-spacing: 1px;
+  }
+
+  .timer-label {
+    font-size: 10px;
+  }
+
+  .timer-message {
+    font-size: 10px;
   }
 
   .preset-buttons {
-    flex-wrap: wrap;
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
   }
 
+  .preset-buttons button {
+    width: 100%;
+  }
+
+  .preset-buttons button:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 320px) {
+
+  .navbar a {
+    font-size: 9px;
+  }
+
+  .timer-circle {
+    width: 155px;
+    height: 155px;
+  }
+
+  .timer-number {
+    font-size: 30px;
+  }
+
+  .control-btn {
+    width: 36px;
+    height: 36px;
+
+    font-size: 15px;
+  }
+
+  .play-btn {
+    width: 45px;
+    height: 45px;
+
+    font-size: 18px;
+  }
 }

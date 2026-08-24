@@ -8,7 +8,7 @@ function Pomodoro() {
   // DATE
   // =========================
 
-  let date = new Date()
+  const date = new Date()
 
 
   // =========================
@@ -54,8 +54,8 @@ function Pomodoro() {
   // INPUT REFERENCES
   // =========================
 
-  const inputRef = useRef()
-  const minRef = useRef()
+  const inputRef = useRef(null)
+  const minRef = useRef(null)
 
 
   // =========================
@@ -88,62 +88,59 @@ function Pomodoro() {
 
   const addTask = () => {
 
-    const name = inputRef.current.value
+    const name = inputRef.current.value.trim()
 
     const minutes = Number(minRef.current.value)
 
-
-    // Don't add empty task
-
-    if (!name || !minutes) {
+    if (!name || !minutes || minutes <= 0) {
       return
     }
 
 
     // Task name
 
-    setTaskName([
-      ...taskName,
+    setTaskName(prev => [
+      ...prev,
       name
     ])
 
 
     // Allocated time
 
-    setAllocationMin([
-      ...allocationMin,
+    setAllocationMin(prev => [
+      ...prev,
       minutes
     ])
 
 
     // Focused time
 
-    setFocused([
-      ...focused,
+    setFocused(prev => [
+      ...prev,
       0
     ])
 
 
     // Remaining time
 
-    setRemaining([
-      ...remaining,
+    setRemaining(prev => [
+      ...prev,
       minutes
     ])
 
 
     // Progress
 
-    setProgress([
-      ...progress,
+    setProgress(prev => [
+      ...prev,
       0
     ])
 
 
     // Status
 
-    setPending([
-      ...pending,
+    setPending(prev => [
+      ...prev,
       "Pending"
     ])
 
@@ -158,13 +155,132 @@ function Pomodoro() {
     // Clear inputs
 
     inputRef.current.value = ""
-
     minRef.current.value = ""
 
 
-    // Close card
+    // Close modal
 
     setTaskCard(false)
+  }
+
+
+  // =========================
+  // UPDATE TASK AFTER SESSION
+  // =========================
+
+  const completeFocusSession = () => {
+
+    if (!selectedTask) {
+      return
+    }
+
+
+    const taskIndex = taskName.indexOf(selectedTask)
+
+    if (taskIndex === -1) {
+      return
+    }
+
+
+    const sessionMinutes = selectedPreset
+
+
+    // =========================
+    // UPDATE FOCUSED
+    // =========================
+
+    setFocused(prev => {
+
+      const updated = [...prev]
+
+      const oldFocused = Number(updated[taskIndex]) || 0
+
+      const allocated = Number(allocationMin[taskIndex])
+
+      const newFocused = Math.min(
+        oldFocused + sessionMinutes,
+        allocated
+      )
+
+      updated[taskIndex] = newFocused
+
+      return updated
+    })
+
+
+    // =========================
+    // UPDATE REMAINING
+    // =========================
+
+    setRemaining(prev => {
+
+      const updated = [...prev]
+
+      const oldRemaining = Number(updated[taskIndex]) || 0
+
+      const newRemaining = Math.max(
+        oldRemaining - sessionMinutes,
+        0
+      )
+
+      updated[taskIndex] = newRemaining
+
+      return updated
+    })
+
+
+    // =========================
+    // UPDATE PROGRESS
+    // =========================
+
+    setProgress(prev => {
+
+      const updated = [...prev]
+
+      const allocated = Number(allocationMin[taskIndex])
+
+      const oldFocused = Number(focused[taskIndex]) || 0
+
+      const newFocused = Math.min(
+        oldFocused + sessionMinutes,
+        allocated
+      )
+
+      const newProgress = Math.min(
+        Math.round((newFocused / allocated) * 100),
+        100
+      )
+
+      updated[taskIndex] = newProgress
+
+      return updated
+    })
+
+
+    // =========================
+    // UPDATE STATUS
+    // =========================
+
+    setPending(prev => {
+
+      const updated = [...prev]
+
+      const oldRemaining = Number(remaining[taskIndex]) || 0
+
+      const newRemaining = Math.max(
+        oldRemaining - sessionMinutes,
+        0
+      )
+
+      if (newRemaining === 0) {
+        updated[taskIndex] = "Completed"
+      } else {
+        updated[taskIndex] = "In Progress"
+      }
+
+      return updated
+    })
+
   }
 
 
@@ -172,30 +288,66 @@ function Pomodoro() {
   // START TIMER
   // =========================
 
-  function Start() {
+  const Start = () => {
 
-    // Prevent multiple intervals
+    // Don't create multiple intervals
 
     if (timer.current !== null) {
       return
     }
 
 
+    // Task must be selected
+
+    if (!selectedTask) {
+      alert("Please select a task first")
+      return
+    }
+
+
+    const taskIndex = taskName.indexOf(selectedTask)
+
+    if (taskIndex === -1) {
+      return
+    }
+
+
+    // Don't start completed task
+
+    if (Number(remaining[taskIndex]) <= 0) {
+      alert("This task is already completed")
+      return
+    }
+
+
+    // Change status
+
+    setPending(prev => {
+
+      const updated = [...prev]
+
+      updated[taskIndex] = "In Progress"
+
+      return updated
+    })
+
+
+    // =========================
+    // START INTERVAL
+    // =========================
+
     timer.current = setInterval(() => {
 
       setSec(prevSec => {
 
-        // Example:
-        // 24:59
-        // 24:58
-        // 24:57
+        // Seconds > 0
 
         if (prevSec > 0) {
           return prevSec - 1
         }
 
 
-        // When seconds reach 0
+        // Seconds reached 0
 
         setMin(prevMin => {
 
@@ -207,11 +359,25 @@ function Pomodoro() {
           }
 
 
-          // Timer finished
+          // =========================
+          // TIMER COMPLETED
+          // =========================
 
           clearInterval(timer.current)
 
           timer.current = null
+
+
+          // Update selected task
+
+          completeFocusSession()
+
+
+          // Reset timer for next session
+
+          setMin(selectedPreset - 1)
+
+          setSec(59)
 
 
           return 0
@@ -230,7 +396,7 @@ function Pomodoro() {
   // STOP / PAUSE TIMER
   // =========================
 
-  function Stop() {
+  const Stop = () => {
 
     clearInterval(timer.current)
 
@@ -242,14 +408,14 @@ function Pomodoro() {
   // SELECT PRESET
   // =========================
 
-  function selectPreset(minutes) {
+  const selectPreset = (minutes) => {
 
-    // Stop existing timer
+    // Stop timer
 
     Stop()
 
 
-    // Store selected preset
+    // Set selected preset
 
     setSelectedPreset(minutes)
 
@@ -269,7 +435,7 @@ function Pomodoro() {
   // RESET TIMER
   // =========================
 
-  function Reset() {
+  const Reset = () => {
 
     Stop()
 
@@ -286,7 +452,9 @@ function Pomodoro() {
   useEffect(() => {
 
     return () => {
+
       clearInterval(timer.current)
+
     }
 
   }, [])
@@ -324,9 +492,6 @@ function Pomodoro() {
 
       <div className="dashboard-header">
 
-
-        {/* BRAND */}
-
         <div className="brand">
 
           <div className="brand-logo">
@@ -345,8 +510,6 @@ function Pomodoro() {
         </div>
 
 
-        {/* GREETING */}
-
         <div className="greeting">
 
           <h3>
@@ -359,8 +522,6 @@ function Pomodoro() {
 
         </div>
 
-
-        {/* RIGHT */}
 
         <div className="header-right">
 
@@ -390,7 +551,9 @@ function Pomodoro() {
         </div>
 
       </div>
-       {/* ==================================================
+
+
+      {/* ==================================================
           TODAY'S TASKS
       ================================================== */}
 
@@ -400,7 +563,6 @@ function Pomodoro() {
         {/* TASK HEADER */}
 
         <div className="taskhead">
-
 
           <div className="t-tile">
 
@@ -421,56 +583,35 @@ function Pomodoro() {
             + Add Task
           </button>
 
-
         </div>
 
 
-        {/* =========================
-            TABLE HEADER
-        ========================= */}
+        {/* TABLE HEADER */}
 
         <div className="taskbody">
 
-          <h3>
-            TASK
-          </h3>
+          <h3>TASK</h3>
 
-          <h3>
-            ALLOCATED TIME
-          </h3>
+          <h3>ALLOCATED TIME</h3>
 
-          <h3>
-            FOCUSED
-          </h3>
+          <h3>FOCUSED</h3>
 
-          <h3>
-            REMAINING
-          </h3>
+          <h3>REMAINING</h3>
 
-          <h3>
-            PROGRESS
-          </h3>
+          <h3>PROGRESS</h3>
 
-          <h3>
-            STATUS
-          </h3>
+          <h3>STATUS</h3>
 
-          <h3>
-            ACTION
-          </h3>
+          <h3>ACTION</h3>
 
         </div>
 
 
-        {/* =========================
-            TASK ROWS
-        ========================= */}
+        {/* TASK ROWS */}
 
         <div className="taskmembers">
 
-
           {taskName.map((task, index) => {
-
 
             return (
 
@@ -479,7 +620,6 @@ function Pomodoro() {
                 key={index}
               >
 
-
                 {/* TASK */}
 
                 <span>
@@ -487,7 +627,7 @@ function Pomodoro() {
                 </span>
 
 
-                {/* ALLOCATED TIME */}
+                {/* ALLOCATED */}
 
                 <span>
                   {formatTime(allocationMin[index])}
@@ -512,7 +652,6 @@ function Pomodoro() {
 
                 <span className="progress-container">
 
-
                   <div className="progress-bar">
 
                     <div
@@ -524,11 +663,9 @@ function Pomodoro() {
 
                   </div>
 
-
                   <span>
                     {progress[index]}%
                   </span>
-
 
                 </span>
 
@@ -556,16 +693,13 @@ function Pomodoro() {
                   ⋮
                 </span>
 
-
               </div>
 
             )
 
           })}
 
-
         </div>
-
 
       </div>
 
@@ -578,14 +712,9 @@ function Pomodoro() {
 
         <div className="modal-overlay">
 
-
           <div className="add-task-card">
 
-
-            {/* MODAL HEADER */}
-
             <div className="add-task-header">
-
 
               <div>
 
@@ -607,20 +736,14 @@ function Pomodoro() {
                 ×
               </button>
 
-
             </div>
 
-
-            {/* =========================
-                TASK NAME
-            ========================= */}
 
             <div className="form-group">
 
               <label>
                 Task Name
               </label>
-
 
               <input
                 type="text"
@@ -631,16 +754,11 @@ function Pomodoro() {
             </div>
 
 
-            {/* =========================
-                ALLOCATED TIME
-            ========================= */}
-
             <div className="form-group">
 
               <label>
                 Allocated Time
               </label>
-
 
               <input
                 type="number"
@@ -651,10 +769,6 @@ function Pomodoro() {
             </div>
 
 
-            {/* =========================
-                ADD TASK
-            ========================= */}
-
             <button
               className="create-task-btn"
               onClick={addTask}
@@ -662,9 +776,7 @@ function Pomodoro() {
               Add Task
             </button>
 
-
           </div>
-
 
         </div>
 
@@ -678,7 +790,7 @@ function Pomodoro() {
       <div className="focus-timer">
 
 
-        {/* TIMER HEADER */}
+        {/* HEADER */}
 
         <div className="focus-header">
 
@@ -699,7 +811,7 @@ function Pomodoro() {
 
 
           {/* =========================
-              LEFT SIDE
+              LEFT
           ========================= */}
 
           <div className="timer-left">
@@ -712,7 +824,6 @@ function Pomodoro() {
               <label>
                 SELECT TASK
               </label>
-
 
               <select
                 value={selectedTask}
@@ -742,7 +853,7 @@ function Pomodoro() {
             </div>
 
 
-            {/* SESSION PRESETS */}
+            {/* PRESETS */}
 
             <div className="timer-field">
 
@@ -752,9 +863,6 @@ function Pomodoro() {
 
 
               <div className="preset-buttons">
-
-
-                {/* 25 MIN */}
 
                 <button
                   className={
@@ -768,8 +876,6 @@ function Pomodoro() {
                 </button>
 
 
-                {/* 5 MIN */}
-
                 <button
                   className={
                     selectedPreset === 5
@@ -782,8 +888,6 @@ function Pomodoro() {
                 </button>
 
 
-                {/* 15 MIN */}
-
                 <button
                   className={
                     selectedPreset === 15
@@ -795,13 +899,12 @@ function Pomodoro() {
                   15m Long
                 </button>
 
-
               </div>
 
             </div>
 
 
-            {/* START FOCUS SESSION */}
+            {/* START */}
 
             <button
               className="start-focus-btn"
@@ -809,7 +912,6 @@ function Pomodoro() {
             >
               Start Focus Session
             </button>
-
 
           </div>
 
@@ -820,14 +922,9 @@ function Pomodoro() {
 
           <div className="timer-center">
 
-
-            {/* CIRCLE */}
-
             <div className="timer-circle">
 
-
               <div className="timer-inside">
-
 
                 <span className="timer-label">
                   FOCUS
@@ -850,23 +947,15 @@ function Pomodoro() {
 
                 </div>
 
-
               </div>
-
 
             </div>
 
 
-            {/* MESSAGE */}
-
             <p className="timer-message">
-
               Ready to focus? 🎯
-
             </p>
 
-
-            {/* CONTROLS */}
 
             <div className="timer-controls">
 
@@ -876,6 +965,7 @@ function Pomodoro() {
               <button
                 className="control-btn reset-btn"
                 onClick={Reset}
+                title="Reset"
               >
                 ↻
               </button>
@@ -886,6 +976,7 @@ function Pomodoro() {
               <button
                 className="control-btn play-btn"
                 onClick={Start}
+                title="Start"
               >
                 ▶
               </button>
@@ -896,101 +987,20 @@ function Pomodoro() {
               <button
                 className="control-btn stop-btn"
                 onClick={Stop}
+                title="Stop"
               >
                 ■
               </button>
 
-
             </div>
-
 
           </div>
-
-
-          {/* =========================
-              RIGHT SIDE
-          ========================= */}
-
-          <div className="session-overview">
-
-
-            <h3>
-              Session Overview
-            </h3>
-
-
-            {/* FOCUSED TIME */}
-
-            <div className="overview-card">
-
-              <span>
-                Focused Time
-              </span>
-
-              <strong>
-                0m
-              </strong>
-
-            </div>
-
-
-            {/* REMAINING TIME */}
-
-            <div className="overview-card">
-
-              <span>
-                Remaining Time
-              </span>
-
-              <strong>
-
-                {selectedTask
-                  ? formatTime(
-                      remaining[
-                        taskName.indexOf(selectedTask)
-                      ] || 0
-                    )
-                  : "0 min"
-                }
-
-              </strong>
-
-            </div>
-
-
-            {/* SESSIONS */}
-
-            <div className="overview-card">
-
-              <span>
-                Sessions
-              </span>
-
-              <strong>
-                0/4
-              </strong>
-
-            </div>
-
-
-            <p className="keep-going">
-              Keep going! 🚀
-            </p>
-
-
-          </div>
-
 
         </div>
 
       </div>
 
-
-     
-
-
     </div>
-
   )
 }
 
