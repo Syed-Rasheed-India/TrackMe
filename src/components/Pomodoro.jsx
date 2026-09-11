@@ -22,13 +22,17 @@ function Pomodoro() {
   // TASK DATA
   // =========================
 
-  const [taskName, setTaskName] = useState([])
-  const [allocationMin, setAllocationMin] = useState([])
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks")
 
-  const [focused, setFocused] = useState([])
-  const [remaining, setRemaining] = useState([])
-  const [progress, setProgress] = useState([])
-  const [pending, setPending] = useState([])
+    return savedTasks ? JSON.parse(savedTasks) : []
+  })
+
+
+  // Save tasks whenever tasks changes
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks))
+  }, [tasks])
 
 
   // =========================
@@ -40,6 +44,7 @@ function Pomodoro() {
 
   const [selectedPreset, setSelectedPreset] = useState(25)
 
+  // Store task ID
   const [selectedTask, setSelectedTask] = useState("")
 
 
@@ -97,72 +102,44 @@ function Pomodoro() {
     }
 
 
-    // Task name
-
-    setTaskName(prev => [
-      ...prev,
-      name
-    ])
-
-
-    // Allocated time
-
-    setAllocationMin(prev => [
-      ...prev,
-      minutes
-    ])
-
-
-    // Focused time
-
-    setFocused(prev => [
-      ...prev,
-      0
-    ])
-
-
-    // Remaining time
-
-    setRemaining(prev => [
-      ...prev,
-      minutes
-    ])
-
-
-    // Progress
-
-    setProgress(prev => [
-      ...prev,
-      0
-    ])
-
-
-    // Status
-
-    setPending(prev => [
-      ...prev,
-      "Pending"
-    ])
-
-
-    // Automatically select first task
-
-    if (taskName.length === 0) {
-      setSelectedTask(name)
+    // Create new task
+    const newTask = {
+      id: tasks.length,
+      taskName: name,
+      allocatedTime: minutes,
+      focused: 0,
+      remaining: minutes,
+      progress: 0,
+      status: "Pending"
     }
 
 
-    // Clear inputs
+    // Add new task to existing tasks
+    setTasks(prev => [
+      ...prev,
+      newTask
+    ])
 
+
+    // Clear inputs
     inputRef.current.value = ""
     minRef.current.value = ""
-
-
-    // Close modal
 
     setTaskCard(false)
   }
 
+
+  const deleteTask = (taskId) => {
+  setTasks(prevTasks =>
+    prevTasks.filter(task => task.id !== taskId)
+  )
+
+  // If the deleted task was selected in the timer
+  if (Number(selectedTask) === taskId) {
+    setSelectedTask("")
+    Stop()
+  }
+}
 
   // =========================
   // UPDATE TASK AFTER SESSION
@@ -175,110 +152,62 @@ function Pomodoro() {
     }
 
 
-    const taskIndex = taskName.indexOf(selectedTask)
-
-    if (taskIndex === -1) {
-      return
-    }
-
+    // Convert select value from string to number
+    const taskId = Number(selectedTask)
 
     const sessionMinutes = selectedPreset
 
 
-    // =========================
-    // UPDATE FOCUSED
-    // =========================
+    setTasks(prevTasks => {
 
-    setFocused(prev => {
+      return prevTasks.map(task => {
 
-      const updated = [...prev]
-
-      const oldFocused = Number(updated[taskIndex]) || 0
-
-      const allocated = Number(allocationMin[taskIndex])
-
-      const newFocused = Math.min(
-        oldFocused + sessionMinutes,
-        allocated
-      )
-
-      updated[taskIndex] = newFocused
-
-      return updated
-    })
+        // Update only selected task
+        if (task.id !== taskId) {
+          return task
+        }
 
 
-    // =========================
-    // UPDATE REMAINING
-    // =========================
-
-    setRemaining(prev => {
-
-      const updated = [...prev]
-
-      const oldRemaining = Number(updated[taskIndex]) || 0
-
-      const newRemaining = Math.max(
-        oldRemaining - sessionMinutes,
-        0
-      )
-
-      updated[taskIndex] = newRemaining
-
-      return updated
-    })
+        // Calculate new focused time
+        const newFocused = Math.min(
+          Number(task.focused) + sessionMinutes,
+          Number(task.allocatedTime)
+        )
 
 
-    // =========================
-    // UPDATE PROGRESS
-    // =========================
-
-    setProgress(prev => {
-
-      const updated = [...prev]
-
-      const allocated = Number(allocationMin[taskIndex])
-
-      const oldFocused = Number(focused[taskIndex]) || 0
-
-      const newFocused = Math.min(
-        oldFocused + sessionMinutes,
-        allocated
-      )
-
-      const newProgress = Math.min(
-        Math.round((newFocused / allocated) * 100),
-        100
-      )
-
-      updated[taskIndex] = newProgress
-
-      return updated
-    })
+        // Calculate remaining time
+        const newRemaining = Math.max(
+          Number(task.allocatedTime) - newFocused,
+          0
+        )
 
 
-    // =========================
-    // UPDATE STATUS
-    // =========================
+        // Calculate progress
+        const newProgress = Math.min(
+          Math.round(
+            (newFocused / Number(task.allocatedTime)) * 100
+          ),
+          100
+        )
 
-    setPending(prev => {
 
-      const updated = [...prev]
+        // Calculate status
+        const newStatus =
+          newRemaining === 0
+            ? "Completed"
+            : "In Progress"
 
-      const oldRemaining = Number(remaining[taskIndex]) || 0
 
-      const newRemaining = Math.max(
-        oldRemaining - sessionMinutes,
-        0
-      )
+        return {
+          ...task,
+          focused: newFocused,
+          remaining: newRemaining,
+          progress: newProgress,
+          status: newStatus
+        }
 
-      if (newRemaining === 0) {
-        updated[taskIndex] = "Completed"
-      } else {
-        updated[taskIndex] = "In Progress"
-      }
+      })
 
-      return updated
     })
 
   }
@@ -291,44 +220,58 @@ function Pomodoro() {
   const Start = () => {
 
     // Don't create multiple intervals
-
     if (timer.current !== null) {
       return
     }
 
 
     // Task must be selected
+    
+     if (selectedPreset === 25 && !selectedTask) {
+    alert("Please select a task first")
+    return
+  }
 
-    if (!selectedTask) {
-      alert("Please select a task first")
-      return
-    }
+
+    const taskId = Number(selectedTask)
 
 
-    const taskIndex = taskName.indexOf(selectedTask)
+    // Find selected task
+    const selectedTaskData = tasks.find(
+      task => task.id === taskId
+    )
 
-    if (taskIndex === -1) {
+
+    if (!selectedTaskData) {
       return
     }
 
 
     // Don't start completed task
-
-    if (Number(remaining[taskIndex]) <= 0) {
+    if (Number(selectedTaskData.remaining) <= 0) {
       alert("This task is already completed")
       return
     }
 
 
-    // Change status
+    // Change task status to In Progress
+    setTasks(prevTasks => {
 
-    setPending(prev => {
+      return prevTasks.map(task => {
 
-      const updated = [...prev]
+        if (task.id === taskId) {
 
-      updated[taskIndex] = "In Progress"
+          return {
+            ...task,
+            status: "In Progress"
+          }
 
-      return updated
+        }
+
+        return task
+
+      })
+
     })
 
 
@@ -340,15 +283,13 @@ function Pomodoro() {
 
       setSec(prevSec => {
 
-        // Seconds > 0
-
+        // Seconds still remaining
         if (prevSec > 0) {
           return prevSec - 1
         }
 
 
         // Seconds reached 0
-
         setMin(prevMin => {
 
           // Example:
@@ -369,18 +310,17 @@ function Pomodoro() {
 
 
           // Update selected task
-
           completeFocusSession()
 
 
           // Reset timer for next session
-
           setMin(selectedPreset - 1)
 
           setSec(59)
 
 
           return 0
+
         })
 
 
@@ -389,6 +329,7 @@ function Pomodoro() {
       })
 
     }, 1000)
+
   }
 
 
@@ -410,13 +351,11 @@ function Pomodoro() {
 
   const selectPreset = (minutes) => {
 
-    // Stop timer
-
+    // Stop current timer
     Stop()
 
 
     // Set selected preset
-
     setSelectedPreset(minutes)
 
 
@@ -459,6 +398,10 @@ function Pomodoro() {
 
   }, [])
 
+
+  // =========================
+  // UI
+  // =========================
 
   return (
 
@@ -553,9 +496,9 @@ function Pomodoro() {
       </div>
 
 
-      {/* ==================================================
+      {/* =========================
           TODAY'S TASKS
-      ================================================== */}
+      ========================= */}
 
       <div className="taskList">
 
@@ -611,44 +554,34 @@ function Pomodoro() {
 
         <div className="taskmembers">
 
-          {taskName.map((task, index) => {
+          {tasks.map((task) => {
 
             return (
 
               <div
                 className="task-row"
-                key={index}
+                key={task.id}
               >
 
-                {/* TASK */}
-
                 <span>
-                  {task}
+                  {task.taskName}
                 </span>
 
 
-                {/* ALLOCATED */}
-
                 <span>
-                  {formatTime(allocationMin[index])}
+                  {formatTime(task.allocatedTime)}
                 </span>
 
 
-                {/* FOCUSED */}
-
                 <span>
-                  {formatTime(focused[index])}
+                  {formatTime(task.focused)}
                 </span>
 
 
-                {/* REMAINING */}
-
                 <span>
-                  {formatTime(remaining[index])}
+                  {formatTime(task.remaining)}
                 </span>
 
-
-                {/* PROGRESS */}
 
                 <span className="progress-container">
 
@@ -657,40 +590,44 @@ function Pomodoro() {
                     <div
                       className="progress-fill"
                       style={{
-                        width: `${progress[index]}%`
+                        width: `${task.progress}%`
                       }}
                     />
 
                   </div>
 
                   <span>
-                    {progress[index]}%
+                    {task.progress}%
                   </span>
 
                 </span>
 
-
-                {/* STATUS */}
 
                 <span>
 
                   <span
                     className={`status ${
-                      pending[index]
+                      task.status
                         .toLowerCase()
                         .replace(" ", "-")
                     }`}
                   >
-                    {pending[index]}
+
+                    {task.status}
+
                   </span>
 
                 </span>
 
 
-                {/* ACTION */}
-
                 <span className="actions">
-                  ⋮
+                  <button
+                  className="actions"
+                  onClick={() => deleteTask(task.id)}
+                  title="Delete task"
+                >
+                  🗑️
+                </button>
                 </span>
 
               </div>
@@ -704,15 +641,16 @@ function Pomodoro() {
       </div>
 
 
-      {/* ==================================================
+      {/* =========================
           ADD TASK MODAL
-      ================================================== */}
+      ========================= */}
 
       {taskCard && (
 
         <div className="modal-overlay">
 
           <div className="add-task-card">
+
 
             <div className="add-task-header">
 
@@ -783,9 +721,9 @@ function Pomodoro() {
       )}
 
 
-      {/* ==================================================
+      {/* =========================
           FOCUS TIMER
-      ================================================== */}
+      ========================= */}
 
       <div className="focus-timer">
 
@@ -837,13 +775,13 @@ function Pomodoro() {
                 </option>
 
 
-                {taskName.map((task, index) => (
+                {tasks.map((task) => (
 
                   <option
-                    key={index}
-                    value={task}
+                    key={task.id}
+                    value={task.id}
                   >
-                    {task}
+                    {task.taskName}
                   </option>
 
                 ))}
@@ -996,12 +934,16 @@ function Pomodoro() {
 
           </div>
 
+
         </div>
 
       </div>
 
+
     </div>
+
   )
+
 }
 
 export default Pomodoro
