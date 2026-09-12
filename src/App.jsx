@@ -7,6 +7,11 @@ import Footer from "./components/Footer";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Pomodoro from "./components/Pomodoro";
+import Revision from "./components/Revision";
+import DueToday from "./components/DueToday";
+import Overdue from "./components/Overdue";
+import Scheduled from "./components/Scheduled";
+import Completed from "./components/Completed";
 function Home() {
   return (
     <div className="app">
@@ -26,6 +31,11 @@ function App(){
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/pomodoro" element={<Pomodoro/>}></Route>
+            <Route path="/revision" element={<Revision/>}></Route>
+            <Route path="/revision/due-today" element={<DueToday />} />
+            <Route path="/revision/overdue" element={<Overdue />} />
+            <Route path="/revision/scheduled" element={<Scheduled />} />
+            <Route path="/revision/completed" element={<Completed />} />
         </Routes>
 
     </BrowserRouter>

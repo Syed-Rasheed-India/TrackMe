@@ -1,0 +1,305 @@
+.overdue-page {
+  min-height: 100vh;
+  background: #0b0f19;
+  color: #ffffff;
+  padding: 40px 20px;
+}
+
+.overdue-container {
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+/* Header */
+
+.overdue-header {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  background: #151b29;
+  border: 1px solid #273044;
+  color: #d6dbea;
+
+  padding: 10px 15px;
+  border-radius: 9px;
+
+  cursor: pointer;
+  font-size: 14px;
+
+  transition: 0.2s ease;
+}
+
+.back-button:hover {
+  background: #1d2535;
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.header-content p {
+  margin: 6px 0 0;
+  color: #929bad;
+  font-size: 14px;
+}
+
+.header-line {
+  height: 1px;
+  background: #242c3d;
+  margin: 25px 0;
+}
+
+/* Task list */
+
+.overdue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Card */
+
+.overdue-card {
+  background: #111724;
+  border: 1px solid #273044;
+
+  border-radius: 14px;
+  padding: 22px;
+
+  transition: 0.2s ease;
+}
+
+.overdue-card:hover {
+  border-color: #3a465e;
+  transform: translateY(-1px);
+}
+
+/* Card top */
+
+.overdue-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+}
+
+.overdue-date {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.overdue-date span {
+  color: #858da0;
+  font-size: 13px;
+}
+
+.overdue-date strong {
+  font-size: 16px;
+  color: #e6e9f0;
+}
+
+.overdue-badge {
+  background: #3a1d25;
+  color: #ff8c9d;
+
+  border: 1px solid #5b2835;
+
+  padding: 6px 11px;
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Concepts */
+
+.concept-section h3 {
+  font-size: 14px;
+  color: #aeb5c5;
+
+  margin: 0 0 12px;
+}
+
+.concept-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.concept-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: #171e2c;
+  border: 1px solid #222b3d;
+
+  padding: 10px 12px;
+  border-radius: 8px;
+
+  color: #dce1ea;
+  font-size: 14px;
+}
+
+.concept-number {
+  width: 23px;
+  height: 23px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #242d40;
+  color: #9ca7bb;
+
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* Complete button */
+
+.complete-button {
+  width: 100%;
+
+  margin-top: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 11px 16px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #1d6b4f;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.complete-button:hover {
+  background: #25845f;
+}
+
+.complete-button:active {
+  transform: scale(0.99);
+}
+
+/* Loading */
+
+.overdue-message {
+  text-align: center;
+  color: #929bad;
+  padding: 60px 20px;
+}
+
+/* Empty */
+
+.overdue-empty {
+  text-align: center;
+
+  border: 1px solid #273044;
+  background: #111724;
+
+  border-radius: 14px;
+
+  padding: 60px 20px;
+}
+
+.overdue-empty svg {
+  color: #45c98b;
+}
+
+.overdue-empty h2 {
+  margin: 18px 0 8px;
+  font-size: 21px;
+}
+
+.overdue-empty p {
+  margin: 0;
+  color: #858da0;
+  font-size: 14px;
+}
+
+/* Tablet */
+
+@media (max-width: 768px) {
+
+  .overdue-page {
+    padding: 30px 16px;
+  }
+
+  .header-content h1 {
+    font-size: 26px;
+  }
+
+  .overdue-card {
+    padding: 18px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 520px) {
+
+  .overdue-page {
+    padding: 20px 12px;
+  }
+
+  .overdue-header {
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .back-button {
+    padding: 8px 11px;
+  }
+
+  .header-content h1 {
+    font-size: 22px;
+  }
+
+  .header-content p {
+    font-size: 13px;
+  }
+
+  .overdue-card {
+    padding: 15px;
+  }
+
+  .overdue-card-top {
+    align-items: flex-start;
+  }
+
+  .overdue-date strong {
+    font-size: 14px;
+  }
+
+  .concept-item {
+    font-size: 13px;
+    padding: 9px;
+  }
+
+  .complete-button {
+    font-size: 13px;
+  }
+}
