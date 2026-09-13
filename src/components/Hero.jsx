@@ -2,7 +2,20 @@ import "./Hero.css";
 import { useNavigate } from "react-router-dom";
 
 function Hero() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      // Already logged in
+      navigate("/pomodoro");
+    } else {
+      // New user
+      navigate("/signup");
+    }
+  };
+
   return (
     <main className="hero">
 
@@ -11,14 +24,12 @@ function Hero() {
         ✨ AI-powered learning
       </div>
 
-
       {/* Main heading */}
       <h1>
         Track what you <span className="purple">learn</span>. Revise
         <br />
         before you <span className="blue">forget</span>.
       </h1>
-
 
       {/* Description */}
       <p className="hero-description">
@@ -27,11 +38,13 @@ function Hero() {
         the perfect time.
       </p>
 
-
       {/* Buttons */}
       <div className="hero-buttons">
 
-        <button className="hero-get-started" onClick={()=>navigate("/signup")}>
+        <button
+          className="hero-get-started"
+          onClick={handleGetStarted}
+        >
           Get Started
           <span>→</span>
         </button>

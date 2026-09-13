@@ -1,285 +1,688 @@
-.overdue-page {
-  min-height: 100vh;
-  background: #0b0f19;
-  color: #ffffff;
-  padding: 40px 20px;
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+  box-sizing: border-box;
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background: #0c0b12;
+}
+
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+.overdue-page {
+  min-height: 100vh;
+
+  padding: 30px;
+
+  background:
+    radial-gradient(
+      circle at 50% -15%,
+      rgba(105, 65, 180, 0.18),
+      transparent 38%
+    ),
+    #0c0b12;
+
+  color: #ffffff;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
 .overdue-container {
-  max-width: 950px;
+  width: 100%;
+  max-width: 1180px;
+
   margin: 0 auto;
 }
 
-/* Header */
+
+/* =====================================================
+   HEADER
+===================================================== */
 
 .overdue-header {
   display: flex;
-  align-items: center;
-  gap: 25px;
+
+  align-items: flex-start;
+
+  gap: 22px;
 }
 
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
 .back-button {
+  height: 36px;
+
   display: flex;
+
   align-items: center;
+  justify-content: center;
+
   gap: 7px;
 
-  background: #151b29;
-  border: 1px solid #273044;
-  color: #d6dbea;
+  padding: 0 12px;
 
-  padding: 10px 15px;
-  border-radius: 9px;
+  border: 1px solid #2c2a35;
+
+  border-radius: 6px;
+
+  background: #17161e;
+
+  color: #aaa6b5;
+
+  font-size: 12px;
 
   cursor: pointer;
-  font-size: 14px;
 
-  transition: 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .back-button:hover {
-  background: #1d2535;
+  background: #211f29;
+
+  color: #ffffff;
+
+  border-color: #403b4c;
+}
+
+
+/* =====================================================
+   HEADER CONTENT
+===================================================== */
+
+.header-content {
+  flex: 1;
 }
 
 .header-content h1 {
   margin: 0;
-  font-size: 30px;
+
+  font-size: 28px;
+
+  line-height: 1.2;
+
+  font-weight: 700;
+
+  letter-spacing: -0.5px;
+
+  color: #eeeeF5;
 }
 
 .header-content p {
-  margin: 6px 0 0;
-  color: #929bad;
+  margin: 7px 0 0;
+
+  color: #8d8a97;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   HEADER LINE
+===================================================== */
+
+.header-line {
+  width: 100%;
+
+  height: 1px;
+
+  margin: 24px 0;
+
+  background: #292630;
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.overdue-message {
+  width: 100%;
+
+  min-height: 150px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: 1px solid #292731;
+
+  border-radius: 9px;
+
+  background: #15141b;
+
+  color: #85818d;
+
   font-size: 14px;
 }
 
-.header-line {
-  height: 1px;
-  background: #242c3d;
-  margin: 25px 0;
-}
 
-/* Task list */
+/* =====================================================
+   EMPTY STATE
+===================================================== */
 
-.overdue-list {
+.overdue-empty {
+  width: 100%;
+
+  min-height: 300px;
+
   display: flex;
+
   flex-direction: column;
-  gap: 18px;
-}
 
-/* Card */
-
-.overdue-card {
-  background: #111724;
-  border: 1px solid #273044;
-
-  border-radius: 14px;
-  padding: 22px;
-
-  transition: 0.2s ease;
-}
-
-.overdue-card:hover {
-  border-color: #3a465e;
-  transform: translateY(-1px);
-}
-
-/* Card top */
-
-.overdue-card-top {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
 
-  margin-bottom: 20px;
+  justify-content: center;
+
+  padding: 40px;
+
+  text-align: center;
+
+  border: 1px solid #292731;
+
+  border-radius: 9px;
+
+  background: #15141b;
 }
 
-.overdue-date {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.overdue-empty svg {
+  width: 48px;
+  height: 48px;
+
+  color: #00d99a;
+
+  margin-bottom: 15px;
 }
 
-.overdue-date span {
-  color: #858da0;
+.overdue-empty h2 {
+  margin: 0;
+
+  font-size: 20px;
+
+  font-weight: 500;
+
+  color: #eeeeF5;
+}
+
+.overdue-empty p {
+  margin: 8px 0 0;
+
+  color: #85818d;
+
   font-size: 13px;
 }
 
-.overdue-date strong {
-  font-size: 16px;
-  color: #e6e9f0;
+
+/* =====================================================
+   OVERDUE LIST
+===================================================== */
+
+.overdue-list {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
 }
+
+
+/* =====================================================
+   OVERDUE CARD
+===================================================== */
+
+.overdue-card {
+  position: relative;
+
+  min-width: 0;
+
+  min-height: 220px;
+
+  padding: 20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(24, 23, 31, 0.98),
+      rgba(16, 15, 22, 0.98)
+    );
+
+  border: 1px solid #382932;
+
+  border-radius: 9px;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.overdue-card:hover {
+  transform: translateY(-2px);
+
+  border-color: #563440;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(29, 25, 34, 0.98),
+      rgba(17, 16, 24, 0.98)
+    );
+}
+
+
+/* =====================================================
+   RED LEFT ACCENT
+===================================================== */
+
+.overdue-card::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 2px;
+
+  background: #ff397c;
+}
+
+
+/* =====================================================
+   CARD TOP
+===================================================== */
+
+.overdue-card-top {
+  width: 100%;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+.overdue-date {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.overdue-date span {
+  color: #77737f;
+
+  font-size: 10px;
+
+  font-weight: 500;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+}
+
+.overdue-date strong {
+  color: #dedbe4;
+
+  font-size: 15px;
+
+  font-weight: 500;
+}
+
+
+/* =====================================================
+   OVERDUE BADGE
+===================================================== */
 
 .overdue-badge {
-  background: #3a1d25;
-  color: #ff8c9d;
+  display: inline-flex;
 
-  border: 1px solid #5b2835;
+  align-items: center;
 
-  padding: 6px 11px;
-  border-radius: 20px;
+  justify-content: center;
 
-  font-size: 12px;
+  flex-shrink: 0;
+
+  padding: 5px 9px;
+
+  border-radius: 5px;
+
+  background: rgba(255, 57, 124, 0.09);
+
+  border: 1px solid rgba(255, 57, 124, 0.22);
+
+  color: #ff6f9c;
+
+  font-size: 10px;
+
   font-weight: 600;
+
+  white-space: nowrap;
 }
 
-/* Concepts */
+
+/* =====================================================
+   CONCEPT SECTION
+===================================================== */
+
+.concept-section {
+  width: 100%;
+
+  margin-top: 22px;
+
+  flex: 1;
+}
 
 .concept-section h3 {
-  font-size: 14px;
-  color: #aeb5c5;
-
   margin: 0 0 12px;
+
+  color: #aaa6b1;
+
+  font-size: 12px;
+
+  font-weight: 500;
 }
 
+
+/* =====================================================
+   CONCEPT LIST
+===================================================== */
+
 .concept-list {
+  width: 100%;
+
   display: flex;
+
   flex-direction: column;
+
   gap: 8px;
 }
 
+
+/* =====================================================
+   CONCEPT ITEM
+===================================================== */
+
 .concept-item {
+  width: 100%;
+
+  min-height: 38px;
+
   display: flex;
+
   align-items: center;
+
   gap: 10px;
 
-  background: #171e2c;
-  border: 1px solid #222b3d;
+  padding: 7px 10px;
 
-  padding: 10px 12px;
-  border-radius: 8px;
+  border: 1px solid #302832;
 
-  color: #dce1ea;
-  font-size: 14px;
+  border-radius: 6px;
+
+  background: #1b181f;
+
+  color: #c5c2ca;
+
+  font-size: 13px;
+
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
 }
 
+.concept-item:hover {
+  border-color: #40313b;
+
+  background: #1e1a22;
+}
+
+
+/* =====================================================
+   CONCEPT NUMBER
+===================================================== */
+
 .concept-number {
-  width: 23px;
-  height: 23px;
+  width: 22px;
+  height: 22px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  border-radius: 50%;
-
-  background: #242d40;
-  color: #9ca7bb;
-
-  font-size: 12px;
   flex-shrink: 0;
+
+  border-radius: 5px;
+
+  background: #30222a;
+
+  color: #ff719d;
+
+  font-size: 10px;
+
+  font-weight: 600;
 }
 
-/* Complete button */
+
+/* =====================================================
+   COMPLETE BUTTON
+===================================================== */
 
 .complete-button {
   width: 100%;
 
+  min-height: 40px;
+
   margin-top: 20px;
 
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
 
-  padding: 11px 16px;
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 14px;
 
   border: none;
-  border-radius: 9px;
 
-  background: #1d6b4f;
+  border-radius: 6px;
+
+  background: #9850f5;
+
   color: #ffffff;
 
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 12px;
+
+  font-weight: 500;
 
   cursor: pointer;
 
-  transition: 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .complete-button:hover {
-  background: #25845f;
+  background: #8740e3;
 }
 
 .complete-button:active {
-  transform: scale(0.99);
+  transform: scale(0.98);
 }
 
-/* Loading */
 
-.overdue-message {
-  text-align: center;
-  color: #929bad;
-  padding: 60px 20px;
-}
+/* =====================================================
+   TABLET
+===================================================== */
 
-/* Empty */
-
-.overdue-empty {
-  text-align: center;
-
-  border: 1px solid #273044;
-  background: #111724;
-
-  border-radius: 14px;
-
-  padding: 60px 20px;
-}
-
-.overdue-empty svg {
-  color: #45c98b;
-}
-
-.overdue-empty h2 {
-  margin: 18px 0 8px;
-  font-size: 21px;
-}
-
-.overdue-empty p {
-  margin: 0;
-  color: #858da0;
-  font-size: 14px;
-}
-
-/* Tablet */
-
-@media (max-width: 768px) {
+@media (max-width: 850px) {
 
   .overdue-page {
-    padding: 30px 16px;
+    padding: 24px;
   }
 
-  .header-content h1 {
-    font-size: 26px;
-  }
-
-  .overdue-card {
-    padding: 18px;
+  .overdue-list {
+    grid-template-columns: 1fr;
   }
 }
 
-/* Mobile */
 
-@media (max-width: 520px) {
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
 
   .overdue-page {
-    padding: 20px 12px;
+    padding: 18px 16px;
   }
+
+
+  /* Header */
 
   .overdue-header {
-    align-items: flex-start;
-    gap: 15px;
+    flex-direction: column;
+
+    gap: 14px;
   }
 
   .back-button {
-    padding: 8px 11px;
+    height: 34px;
   }
 
   .header-content h1 {
-    font-size: 22px;
+    font-size: 25px;
   }
 
   .header-content p {
-    font-size: 13px;
+    font-size: 12px;
+  }
+
+
+  /* Divider */
+
+  .header-line {
+    margin: 20px 0;
+  }
+
+
+  /* Cards */
+
+  .overdue-list {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .overdue-card {
+    min-height: 200px;
+
+    padding: 17px;
+  }
+
+
+  /* Empty */
+
+  .overdue-empty {
+    min-height: 250px;
+
+    padding: 25px;
+  }
+
+  .overdue-empty h2 {
+    font-size: 18px;
+  }
+
+  .overdue-empty p {
+    font-size: 12px;
+  }
+
+
+  /* Date */
+
+  .overdue-date strong {
+    font-size: 14px;
+  }
+
+
+  /* Concepts */
+
+  .concept-item {
+    font-size: 12px;
+  }
+
+
+  /* Button */
+
+  .complete-button {
+    min-height: 38px;
+
+    font-size: 11px;
+  }
+}
+
+
+/* =====================================================
+   VERY SMALL MOBILE
+===================================================== */
+
+@media (max-width: 380px) {
+
+  .overdue-page {
+    padding: 15px 12px;
   }
 
   .overdue-card {
@@ -287,19 +690,31 @@
   }
 
   .overdue-card-top {
-    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .overdue-date span {
+    font-size: 9px;
   }
 
   .overdue-date strong {
-    font-size: 14px;
+    font-size: 13px;
+  }
+
+  .overdue-badge {
+    padding: 4px 7px;
+
+    font-size: 9px;
   }
 
   .concept-item {
-    font-size: 13px;
-    padding: 9px;
+    font-size: 11px;
+
+    padding: 7px 9px;
   }
 
-  .complete-button {
-    font-size: 13px;
+  .concept-number {
+    width: 21px;
+    height: 21px;
   }
 }

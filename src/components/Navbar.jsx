@@ -15,10 +15,10 @@ function Navbar() {
       </div>
 
       {/* Get Started */}
-      <button className="navbar-button">
+      {/* <button className="navbar-button">
         Get Started
         <span>→</span>
-      </button>
+      </button> */}
 
     </nav>
   );

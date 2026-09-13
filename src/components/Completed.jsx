@@ -1,50 +1,242 @@
-
 import { useEffect, useState } from "react";
+
 import {
   ArrowLeft,
   CalendarDays,
   CheckCircle2
 } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
+
 import "./Completed.css";
 
-const API_URL = "http://localhost:3000/api/tasks";
+
+// ==========================================
+// API URL
+// ==========================================
+
+const API_URL =
+  "https://trackme-backend-25ut.onrender.com/api/tasks";
+
+
+// ==========================================
+// AUTH HEADERS
+// ==========================================
+
+const getAuthHeaders = () => {
+
+  const token =
+    localStorage.getItem("token");
+
+
+  return {
+
+    Authorization:
+      `Bearer ${token}`
+
+  };
+
+};
+
 
 function Completed() {
 
   const navigate = useNavigate();
 
-  const [completedTasks, setCompletedTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+  // ==========================================
+  // COMPLETED TASKS
+  // ==========================================
+
+  const [completedTasks, setCompletedTasks] =
+    useState([]);
 
 
-  // Fetch completed tasks
+  // ==========================================
+  // LOADING
+  // ==========================================
+
+  const [loading, setLoading] =
+    useState(true);
+
+
+  // ==========================================
+  // FETCH COMPLETED REVISIONS
+  // ==========================================
+
   const fetchCompleted = async () => {
 
     try {
 
-      const response = await fetch(API_URL);
+      setLoading(true);
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch tasks");
+
+      // ========================================
+      // GET JWT TOKEN
+      // ========================================
+
+      const token =
+        localStorage.getItem("token");
+
+
+      // ========================================
+      // CHECK LOGIN
+      // ========================================
+
+      if (!token) {
+
+        navigate("/login");
+
+        return;
+
       }
 
-      const data = await response.json();
 
-      // Only completed tasks
-      const completed = data
-        .filter((item) => item.status === "completed")
-        .sort(
-          (a, b) =>
-            new Date(b.date) - new Date(a.date)
+      // ========================================
+      // FETCH TASKS
+      // ========================================
+
+      const response =
+        await fetch(
+          API_URL,
+          {
+            headers:
+              getAuthHeaders()
+          }
         );
 
-      setCompletedTasks(completed);
+
+      // ========================================
+      // TOKEN INVALID / EXPIRED
+      // ========================================
+
+      if (response.status === 401) {
+
+        localStorage.removeItem(
+          "token"
+        );
+
+        localStorage.removeItem(
+          "user"
+        );
+
+        navigate("/login");
+
+        return;
+
+      }
+
+
+      // ========================================
+      // RESPONSE DATA
+      // ========================================
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Failed to fetch tasks"
+        );
+
+      }
+
+
+      // ========================================
+      // COMPLETED ARRAY
+      // ========================================
+
+      const completed = [];
+
+
+      // ========================================
+      // LOOP THROUGH TASKS
+      // ========================================
+
+      data.forEach((item) => {
+
+        // Make sure revisions exist
+
+        if (!item.revisions) {
+
+          return;
+
+        }
+
+
+        // ======================================
+        // LOOP THROUGH REVISIONS
+        // ======================================
+
+        item.revisions.forEach(
+          (revision) => {
+
+
+            // ==================================
+            // ONLY COMPLETED REVISIONS
+            // ==================================
+
+            if (
+              revision.status ===
+              "completed"
+            ) {
+
+              completed.push({
+
+                taskId:
+                  item._id,
+
+                tasks:
+                  item.tasks,
+
+                day:
+                  revision.day,
+
+                date:
+                  revision.date
+
+              });
+
+            }
+
+          }
+        );
+
+      });
+
+
+      // ========================================
+      // SORT
+      // ========================================
+      // Latest completed revision first
+      // ========================================
+
+      completed.sort(
+
+        (a, b) =>
+
+          new Date(b.date) -
+          new Date(a.date)
+
+      );
+
+
+      // ========================================
+      // UPDATE STATE
+      // ========================================
+
+      setCompletedTasks(
+        completed
+      );
+
 
     } catch (error) {
 
       console.error(
-        "Error fetching completed tasks:",
+        "Error fetching completed revisions:",
         error
       );
 
@@ -53,10 +245,14 @@ function Completed() {
       setLoading(false);
 
     }
+
   };
 
 
-  // Run when page loads
+  // ==========================================
+  // RUN WHEN PAGE LOADS
+  // ==========================================
+
   useEffect(() => {
 
     fetchCompleted();
@@ -64,10 +260,15 @@ function Completed() {
   }, []);
 
 
-  // Format date
+  // ==========================================
+  // FORMAT DATE
+  // ==========================================
+
   const formatDate = (date) => {
 
-    return new Date(date).toLocaleDateString(
+    return new Date(
+      date
+    ).toLocaleDateString(
       "en-GB",
       {
         day: "2-digit",
@@ -79,52 +280,94 @@ function Completed() {
   };
 
 
+  // ==========================================
+  // UI
+  // ==========================================
+
   return (
 
     <div className="completed-page">
 
+
+      {/* ======================================
+          MAIN
+          ====================================== */}
+
       <main className="completed-container">
 
 
-        {/* Back button */}
+        {/* ====================================
+            BACK BUTTON
+            ==================================== */}
 
         <button
+
           className="completed-back"
-          onClick={() => navigate("/revision")}
+
+          onClick={() =>
+            navigate("/revision")
+          }
+
         >
 
-          <ArrowLeft size={12} />
+          <ArrowLeft
+            size={12}
+          />
 
           <span>
+
             Revision Tracker
+
           </span>
 
         </button>
 
 
-        {/* Header */}
+        {/* ====================================
+            HEADER
+            ==================================== */}
 
-        <div className="completed-header">
+        <div
+          className="completed-header"
+        >
 
           <div>
 
             <h1>
+
               Completed Revisions
+
             </h1>
 
+
             <p>
-              Revisions you have successfully completed.
+
+              Revisions you have successfully
+              completed.
+
             </p>
 
           </div>
 
 
-          <div className="completed-count">
+          {/* ==================================
+              COMPLETED COUNT
+              ================================== */}
 
-            <CheckCircle2 size={13} />
+          <div
+            className="completed-count"
+          >
+
+            <CheckCircle2
+              size={13}
+            />
 
             <span>
-              {completedTasks.length} Completed
+
+              {completedTasks.length}
+              {" "}
+              Completed
+
             </span>
 
           </div>
@@ -132,33 +375,51 @@ function Completed() {
         </div>
 
 
-        {/* Divider */}
+        {/* ====================================
+            DIVIDER
+            ==================================== */}
 
-        <div className="completed-divider" />
+        <div
+          className="completed-divider"
+        />
 
 
-        {/* Loading */}
+        {/* ====================================
+            LOADING
+            ==================================== */}
 
         {loading && (
 
-          <div className="completed-empty">
+          <div
+            className="completed-empty"
+          >
+
             Loading completed revisions...
+
           </div>
 
         )}
 
 
-        {/* No completed tasks */}
+        {/* ====================================
+            NO COMPLETED REVISIONS
+            ==================================== */}
 
         {!loading &&
           completedTasks.length === 0 && (
 
-            <div className="completed-empty">
+            <div
+              className="completed-empty"
+            >
 
-              <CheckCircle2 size={24} />
+              <CheckCircle2
+                size={24}
+              />
 
               <p>
+
                 No completed revisions yet.
+
               </p>
 
             </div>
@@ -167,78 +428,123 @@ function Completed() {
         }
 
 
-        {/* Completed cards */}
+        {/* ====================================
+            COMPLETED CARDS
+            ==================================== */}
 
         {!loading &&
           completedTasks.length > 0 && (
 
-            <div className="completed-list">
+            <div
+              className="completed-list"
+            >
 
-              {completedTasks.map((item) => (
+              {completedTasks.map(
+                (item) => (
 
-                <div
-                  className="completed-card"
-                  key={item._id}
-                >
+                  <div
+
+                    className="completed-card"
+
+                    key={
+                      `${item.taskId}-${item.day}`
+                    }
+
+                  >
 
 
-                  {/* Card top */}
+                    {/* ==========================
+                        CARD TOP
+                        ========================== */}
 
-                  <div className="completed-card-top">
+                    <div
+                      className="completed-card-top"
+                    >
 
-                    <div className="completed-date">
 
-                      <CalendarDays size={13} />
+                      {/* DATE */}
 
-                      <span>
-                        {formatDate(item.date)}
+                      <div
+                        className="completed-date"
+                      >
+
+                        <CalendarDays
+                          size={13}
+                        />
+
+                        <span>
+
+                          {formatDate(
+                            item.date
+                          )}
+
+                        </span>
+
+                      </div>
+
+
+                      {/* BADGE */}
+
+                      <span
+                        className="completed-badge"
+                      >
+
+                        <CheckCircle2
+                          size={9}
+                        />
+
+                        DAY {item.day}
+                        {" · "}
+                        COMPLETED
+
                       </span>
 
                     </div>
 
 
-                    <span className="completed-badge">
+                    {/* ==========================
+                        CONCEPTS
+                        ========================== */}
 
-                      <CheckCircle2 size={9} />
+                    <div
+                      className="completed-concepts"
+                    >
 
-                      COMPLETED
+                      {item.tasks.map(
+                        (
+                          concept,
+                          index
+                        ) => (
 
-                    </span>
+                          <div
+
+                            className="completed-concept"
+
+                            key={index}
+
+                          >
+
+                            <CheckCircle2
+                              size={12}
+                            />
+
+                            <span>
+
+                              {concept}
+
+                            </span>
+
+                          </div>
+
+                        )
+                      )}
+
+                    </div>
 
                   </div>
 
-
-                  {/* Concepts */}
-
-                  <div className="completed-concepts">
-
-                    {item.tasks.map(
-                      (concept, index) => (
-
-                        <div
-                          className="completed-concept"
-                          key={index}
-                        >
-
-                          <CheckCircle2
-                            size={12}
-                          />
-
-                          <span>
-                            {concept}
-                          </span>
-
-                        </div>
-
-                      )
-                    )}
-
-                  </div>
-
-
-                </div>
-
-              ))}
+                )
+              )}
 
             </div>
 
@@ -248,30 +554,54 @@ function Completed() {
       </main>
 
 
-      {/* Footer */}
+      {/* ======================================
+          FOOTER
+          ====================================== */}
 
-      <footer className="completed-footer">
+      <footer
+        className="completed-footer"
+      >
 
-        <div className="footer-brand">
+        <div
+          className="footer-brand"
+        >
+
           TrackMe.AI
+
         </div>
 
-        <div className="footer-copy">
+
+        <div
+          className="footer-copy"
+        >
+
           © 2024 TrackMe.AI
+
         </div>
 
-        <div className="footer-links">
+
+        <div
+          className="footer-links"
+        >
 
           <span>
+
             Privacy
+
           </span>
 
+
           <span>
+
             Terms
+
           </span>
 
+
           <span>
+
             Help
+
           </span>
 
         </div>
@@ -281,6 +611,8 @@ function Completed() {
     </div>
 
   );
+
 }
+
 
 export default Completed;

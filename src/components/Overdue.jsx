@@ -3,220 +3,395 @@ import { ArrowLeft, CircleCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import "./Overdue.css";
 
-const API_URL = "http://localhost:3000/api/tasks";
+const API_URL = "https://trackme-backend-25ut.onrender.com/api/tasks";
 
 function Overdue() {
+
   const navigate = useNavigate();
 
   const [overdueTasks, setOverdueTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch overdue tasks
+
+  // ==========================================
+  // FETCH OVERDUE REVISIONS
+  // ==========================================
+
   const fetchOverdueTasks = async () => {
+
     try {
+
       setLoading(true);
 
       const response = await fetch(API_URL);
+
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error("Failed to fetch tasks");
       }
 
-      const today = new Date().toISOString().split("T")[0];
 
-      const overdue = data
-        .filter(
-          (item) =>
-            item.status === "pending" &&
-            item.date < today
-        )
-        .sort(
-          (a, b) =>
-            new Date(a.date) - new Date(b.date)
-        );
+      const today =
+        new Date().toISOString().split("T")[0];
+
+
+      const overdue = [];
+
+
+      // Go through every task
+      data.forEach((item) => {
+
+        // Go through every revision
+        item.revisions.forEach((revision) => {
+
+          if (
+            revision.status === "pending" &&
+            revision.unlocked === true &&
+            revision.date < today
+          ) {
+
+            overdue.push({
+
+              taskId: item._id,
+
+              tasks: item.tasks,
+
+              day: revision.day,
+
+              date: revision.date
+
+            });
+
+          }
+
+        });
+
+      });
+
+
+      // Oldest overdue first
+      overdue.sort(
+        (a, b) =>
+          new Date(a.date) -
+          new Date(b.date)
+      );
+
 
       setOverdueTasks(overdue);
+
     } catch (error) {
-      console.error("FETCH OVERDUE ERROR:", error);
+
+      console.error(
+        "FETCH OVERDUE ERROR:",
+        error
+      );
+
     } finally {
+
       setLoading(false);
+
     }
+
   };
 
+
   useEffect(() => {
+
     fetchOverdueTasks();
+
   }, []);
 
-  // Complete task
-  const handleComplete = async (id) => {
+
+  // ==========================================
+  // COMPLETE REVISION
+  // ==========================================
+
+  const handleComplete = async (
+    taskId,
+    day
+  ) => {
+
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+
+      const response = await fetch(
+        `${API_URL}/${taskId}/revision/${day}`,
+        {
+          method: "PATCH",
+
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
 
       const data = await response.json();
 
+
       if (!response.ok) {
+
         throw new Error(
-          data.message || "Failed to complete task"
+          data.message ||
+          "Failed to complete revision"
         );
+
       }
 
-      // Remove completed task from overdue page
+
+      // Remove completed revision
       setOverdueTasks((prev) =>
-        prev.filter((item) => item._id !== id)
+        prev.filter(
+          (item) =>
+            !(
+              item.taskId === taskId &&
+              item.day === day
+            )
+        )
       );
+
+
     } catch (error) {
-      console.error("COMPLETE TASK ERROR:", error);
+
+      console.error(
+        "COMPLETE REVISION ERROR:",
+        error
+      );
+
     }
+
   };
 
-  // Format date
+
+  // ==========================================
+  // FORMAT DATE
+  // ==========================================
+
   const formatDate = (date) => {
-    return new Date(date).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
+
+    return new Date(date).toLocaleDateString(
+      "en-GB",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      }
+    );
+
   };
+
 
   return (
+
     <div className="overdue-page">
 
       <div className="overdue-container">
 
-        {/* Header */}
+
+        {/* HEADER */}
+
         <div className="overdue-header">
 
           <button
             className="back-button"
-            onClick={() => navigate("/revision")}
+            onClick={() =>
+              navigate("/revision")
+            }
           >
+
             <ArrowLeft size={18} />
+
             Back
+
           </button>
 
+
           <div className="header-content">
-            <h1>Overdue Tasks</h1>
+
+            <h1>
+              Overdue Tasks
+            </h1>
 
             <p>
+
               {overdueTasks.length}{" "}
+
               {overdueTasks.length === 1
-                ? "task"
-                : "tasks"}{" "}
+                ? "revision"
+                : "revisions"}{" "}
+
               overdue
+
             </p>
+
           </div>
 
         </div>
 
+
         <div className="header-line"></div>
 
-        {/* Loading */}
+
+        {/* LOADING */}
+
         {loading && (
+
           <div className="overdue-message">
-            Loading overdue tasks...
-          </div>
-        )}
 
-        {/* Empty */}
-        {!loading && overdueTasks.length === 0 && (
-          <div className="overdue-empty">
-
-            <CircleCheck size={48} />
-
-            <h2>No overdue tasks 🎉</h2>
-
-            <p>
-              You're all caught up. Keep going!
-            </p>
+            Loading overdue revisions...
 
           </div>
+
         )}
 
-        {/* Tasks */}
-        {!loading && overdueTasks.length > 0 && (
-          <div className="overdue-list">
 
-            {overdueTasks.map((item) => (
+        {/* EMPTY */}
 
-              <div
-                className="overdue-card"
-                key={item._id}
-              >
+        {!loading &&
+          overdueTasks.length === 0 && (
 
-                {/* Card top */}
-                <div className="overdue-card-top">
+            <div className="overdue-empty">
 
-                  <div className="overdue-date">
-                    <span>Due Date</span>
-                    <strong>
-                      {formatDate(item.date)}
-                    </strong>
+              <CircleCheck size={48} />
+
+              <h2>
+                No overdue tasks 🎉
+              </h2>
+
+              <p>
+                You're all caught up.
+                Keep going!
+              </p>
+
+            </div>
+
+          )}
+
+
+        {/* OVERDUE CARDS */}
+
+        {!loading &&
+          overdueTasks.length > 0 && (
+
+            <div className="overdue-list">
+
+              {overdueTasks.map(
+                (item, index) => (
+
+                  <div
+                    className="overdue-card"
+                    key={`${item.taskId}-${item.day}`}
+                  >
+
+
+                    {/* CARD TOP */}
+
+                    <div className="overdue-card-top">
+
+                      <div className="overdue-date">
+
+                        <span>
+                          Due Date
+                        </span>
+
+                        <strong>
+                          {formatDate(
+                            item.date
+                          )}
+                        </strong>
+
+                      </div>
+
+
+                      <span className="overdue-badge">
+
+                        Day {item.day}
+
+                      </span>
+
+                    </div>
+
+
+                    {/* CONCEPTS */}
+
+                    <div className="concept-section">
+
+                      <h3>
+                        Topics to revise
+                      </h3>
+
+
+                      <div className="concept-list">
+
+                        {item.tasks.map(
+                          (
+                            concept,
+                            conceptIndex
+                          ) => (
+
+                            <div
+                              className="concept-item"
+                              key={conceptIndex}
+                            >
+
+                              <span className="concept-number">
+
+                                {conceptIndex + 1}
+
+                              </span>
+
+
+                              <span>
+
+                                {concept}
+
+                              </span>
+
+                            </div>
+
+                          )
+                        )}
+
+                      </div>
+
+                    </div>
+
+
+                    {/* COMPLETE */}
+
+                    <button
+                      className="complete-button"
+                      onClick={() =>
+                        handleComplete(
+                          item.taskId,
+                          item.day
+                        )
+                      }
+                    >
+
+                      <CircleCheck
+                        size={18}
+                      />
+
+                      Mark as Completed
+
+                    </button>
+
                   </div>
 
-                  <span className="overdue-badge">
-                    Overdue
-                  </span>
+                )
+              )}
 
-                </div>
+            </div>
 
-                {/* Concepts */}
-                <div className="concept-section">
-
-                  <h3>Topics to revise</h3>
-
-                  <div className="concept-list">
-
-                    {item.tasks.map(
-                      (concept, index) => (
-
-                        <div
-                          className="concept-item"
-                          key={index}
-                        >
-                          <span className="concept-number">
-                            {index + 1}
-                          </span>
-
-                          <span>
-                            {concept}
-                          </span>
-                        </div>
-
-                      )
-                    )}
-
-                  </div>
-
-                </div>
-
-                {/* Complete button */}
-                <button
-                  className="complete-button"
-                  onClick={() =>
-                    handleComplete(item._id)
-                  }
-                >
-                  <CircleCheck size={18} />
-                  Mark as Completed
-                </button>
-
-              </div>
-
-            ))}
-
-          </div>
-        )}
+          )}
 
       </div>
 
     </div>
+
   );
+
 }
 
 export default Overdue;

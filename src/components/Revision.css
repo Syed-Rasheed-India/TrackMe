@@ -6,14 +6,18 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+
   background:
     radial-gradient(
       circle at 50% -20%,
@@ -28,6 +32,7 @@ body {
     );
 
   color: white;
+  overflow-x: hidden;
 }
 
 
@@ -49,6 +54,9 @@ body {
 
   background: #0b0a12;
   border-bottom: 1px solid #1c1a24;
+
+  position: relative;
+  z-index: 10;
 }
 
 .navbar a {
@@ -97,36 +105,33 @@ body {
 
 
 /* =====================================================
-   REVISION TRACKER
+   REVISION DASHBOARD
 ===================================================== */
 
 .revision-dashboard {
   width: 100%;
 
-  padding: 24px 30px 28px;
+  padding: 30px;
 
   color: #ffffff;
+
+  background: transparent;
 }
-
-
-/* =====================================================
-   HEADER
-===================================================== */
 
 .revision-header h1 {
   margin: 0;
 
-  font-size: 27px;
+  font-size: 28px;
   font-weight: 700;
   line-height: 1.2;
 
   letter-spacing: -0.5px;
 
-  color: #eeeeF5;
+  color: #eeeef5;
 }
 
 .revision-header p {
-  margin: 7px 0 0;
+  margin: 8px 0 0;
 
   font-size: 13px;
   line-height: 1.5;
@@ -142,7 +147,7 @@ body {
 .stats-grid {
   display: grid;
 
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 
   gap: 16px;
 
@@ -157,15 +162,22 @@ body {
   border: 1px solid #24232c;
   border-radius: 8px;
 
-  background: rgba(18, 17, 24, 0.85);
+  background: rgba(18, 17, 24, 0.9);
 
-  transition: 0.2s;
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
 
   border-color: #373541;
+
+  background: #16151d;
 }
 
 .card-top {
@@ -233,17 +245,19 @@ body {
 .track-container {
   width: 100%;
 
-  padding: 26px 30px;
+  padding: 28px 30px;
 
   color: #ffffff;
 
   background: #111016;
+
+  border-top: 1px solid #191821;
 }
 
 .track-container h2 {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
 
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 500;
 
   color: #ffffff;
@@ -266,14 +280,16 @@ body {
 .input-wrapper {
   flex: 1;
 
-  height: 40px;
+  min-width: 0;
+
+  height: 42px;
 
   display: flex;
   align-items: center;
 
   gap: 9px;
 
-  padding: 0 12px;
+  padding: 0 13px;
 
   background: #1b1a21;
 
@@ -282,16 +298,22 @@ body {
   border-radius: 7px;
 
   color: #8c8994;
+
+  transition: border-color 0.2s ease;
 }
 
 .input-wrapper:focus-within {
   border-color: #8b4de8;
 }
 
+.input-wrapper svg {
+  flex-shrink: 0;
+}
+
 .input-wrapper input {
   flex: 1;
 
-  width: 100%;
+  min-width: 0;
 
   border: none;
   outline: none;
@@ -313,9 +335,9 @@ body {
 ===================================================== */
 
 .add-btn {
-  height: 40px;
+  height: 42px;
 
-  padding: 0 17px;
+  padding: 0 18px;
 
   border: 1px solid #34323c;
 
@@ -329,7 +351,9 @@ body {
 
   cursor: pointer;
 
-  transition: 0.2s;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .add-btn:hover {
@@ -346,11 +370,13 @@ body {
 ===================================================== */
 
 .task-section {
+  width: 100%;
+
   margin-top: 20px;
 }
 
 .section-title {
-  margin: 0 0 9px;
+  margin: 0 0 10px;
 
   font-size: 11px;
 
@@ -369,7 +395,7 @@ body {
 .task-card {
   width: 100%;
 
-  min-height: 42px;
+  min-height: 44px;
 
   display: flex;
 
@@ -379,7 +405,7 @@ body {
 
   padding: 0 12px;
 
-  margin-bottom: 7px;
+  margin-bottom: 8px;
 
   background: #1b1a21;
 
@@ -387,7 +413,7 @@ body {
 
   border-radius: 7px;
 
-  transition: 0.2s;
+  transition: border-color 0.2s ease;
 }
 
 .task-card:hover {
@@ -395,6 +421,8 @@ body {
 }
 
 .task-left {
+  min-width: 0;
+
   display: flex;
 
   align-items: center;
@@ -414,9 +442,13 @@ body {
 }
 
 .task-name {
+  min-width: 0;
+
   font-size: 13px;
 
   color: #d7d5db;
+
+  overflow-wrap: anywhere;
 }
 
 
@@ -425,13 +457,15 @@ body {
 ===================================================== */
 
 .delete-btn {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
 
   display: flex;
 
   align-items: center;
   justify-content: center;
+
+  flex-shrink: 0;
 
   padding: 0;
 
@@ -445,7 +479,9 @@ body {
 
   border-radius: 5px;
 
-  transition: 0.2s;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
 }
 
 .delete-btn:hover {
@@ -476,9 +512,9 @@ body {
 
   gap: 6px;
 
-  height: 36px;
+  height: 38px;
 
-  padding: 0 15px;
+  padding: 0 16px;
 
   border: none;
 
@@ -492,11 +528,17 @@ body {
 
   cursor: pointer;
 
-  transition: 0.2s;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .confirm-btn:hover {
   background: #8b3ee2;
+}
+
+.confirm-btn:active {
+  transform: scale(0.97);
 }
 
 
@@ -507,17 +549,19 @@ body {
 .action-section {
   width: 100%;
 
-  padding: 26px 30px;
+  padding: 28px 30px;
 
   background: #111016;
 
   color: white;
+
+  border-top: 1px solid #191821;
 }
 
 .action-section h2 {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
 
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 500;
 }
 
@@ -527,6 +571,8 @@ body {
 ===================================================== */
 
 .action-grid {
+  width: 100%;
+
   display: grid;
 
   grid-template-columns:
@@ -541,7 +587,9 @@ body {
 ===================================================== */
 
 .action-card {
-  min-height: 205px;
+  min-width: 0;
+
+  min-height: 210px;
 
   padding: 18px;
 
@@ -555,7 +603,9 @@ body {
 
   flex-direction: column;
 
-  transition: 0.2s;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .action-card:hover {
@@ -570,13 +620,13 @@ body {
 
 
 /* =====================================================
-   DATE
+   ACTION DATE
 ===================================================== */
 
 .action-top {
   display: flex;
 
-  align-items: center;
+  align-items: flex-start;
 
   justify-content: space-between;
 
@@ -584,12 +634,40 @@ body {
 }
 
 .action-date {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  flex-wrap: wrap;
+
   font-size: 13px;
 
   color: #ddd9e1;
 }
 
-.action-top svg {
+.revision-day {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 3px 7px;
+
+  border-radius: 4px;
+
+  background: rgba(155, 77, 242, 0.12);
+
+  color: #b77aff;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+.action-top > svg {
+  flex-shrink: 0;
+
   width: 17px;
   height: 17px;
 
@@ -624,16 +702,20 @@ body {
   gap: 9px;
 
   flex: 1;
+
+  min-width: 0;
 }
 
 .action-task {
   display: flex;
 
-  align-items: center;
+  align-items: flex-start;
 
   gap: 8px;
 
   font-size: 13px;
+
+  line-height: 1.4;
 
   color: #aaa6b1;
 }
@@ -641,6 +723,8 @@ body {
 .task-circle {
   width: 12px;
   height: 12px;
+
+  margin-top: 2px;
 
   color: #aaa6b1;
 
@@ -679,13 +763,18 @@ body {
 
   cursor: pointer;
 
-  transition: 0.2s;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .review-btn:hover {
   background: #27252e;
 
   color: white;
+
+  border-color: #44305f;
 }
 
 .active-review {
@@ -706,6 +795,8 @@ body {
 ===================================================== */
 
 .no-due {
+  width: 100%;
+
   min-height: 110px;
 
   display: flex;
@@ -733,7 +824,7 @@ body {
 .spaced-section {
   width: 100%;
 
-  padding: 28px 30px;
+  padding: 30px;
 
   border-top: 1px solid #252532;
 
@@ -743,13 +834,13 @@ body {
 .spaced-header h2 {
   margin: 0;
 
-  font-size: 20px;
+  font-size: 21px;
 
   color: #ffffff;
 }
 
 .spaced-header p {
-  margin: 6px 0 16px;
+  margin: 7px 0 17px;
 
   font-size: 13px;
 
@@ -762,9 +853,11 @@ body {
 ===================================================== */
 
 .spaced-note {
+  width: 100%;
+
   margin-bottom: 18px;
 
-  padding: 13px 15px;
+  padding: 14px 15px;
 
   border-radius: 7px;
 
@@ -812,7 +905,7 @@ body {
 
 
 /* =====================================================
-   CHART
+   CHART STYLING
 ===================================================== */
 
 .grid-line {
@@ -866,7 +959,7 @@ body {
    TABLET
 ===================================================== */
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
 
   .revision-dashboard,
   .track-container,
@@ -881,7 +974,7 @@ body {
   }
 
   .action-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -922,6 +1015,11 @@ body {
 
   /* Header */
 
+  .revision-dashboard {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
   .revision-header h1 {
     font-size: 25px;
   }
@@ -934,9 +1032,11 @@ body {
   /* Stats */
 
   .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
     gap: 10px;
+
+    margin-top: 20px;
   }
 
   .stat-card {
@@ -954,6 +1054,18 @@ body {
   }
 
 
+  /* Track */
+
+  .track-container {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .track-container h2 {
+    font-size: 20px;
+  }
+
+
   /* Add section */
 
   .add-section {
@@ -962,12 +1074,21 @@ body {
     align-items: stretch;
   }
 
+  .input-wrapper {
+    width: 100%;
+  }
+
   .add-btn {
     width: 100%;
   }
 
 
   /* Action */
+
+  .action-section {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
 
   .action-grid {
     grid-template-columns: 1fr;
@@ -981,6 +1102,11 @@ body {
 
 
   /* Spaced repetition */
+
+  .spaced-section {
+    padding-top: 26px;
+    padding-bottom: 30px;
+  }
 
   .spaced-header h2 {
     font-size: 20px;
@@ -1032,5 +1158,9 @@ body {
 
   .action-card {
     padding: 16px;
+  }
+
+  .action-date {
+    font-size: 12px;
   }
 }

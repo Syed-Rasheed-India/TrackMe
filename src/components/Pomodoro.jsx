@@ -10,7 +10,74 @@ function Pomodoro() {
 
   const date = new Date()
 
+  const [userName, setUserName] = useState("User");
+  const [gender, setGender] = useState(null);
 
+  useEffect(() => {
+  const getUserData = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (!user) {
+        return;
+      }
+
+      // Get name from logged-in user
+      const name = user.fullName || user.name || user.username;
+
+      if (!name) {
+        return;
+      }
+
+      // Get first name only
+      const firstName = name.trim().split(" ")[0];
+
+      setUserName(firstName);
+
+      // Genderize API
+      const response = await fetch(
+        `https://api.genderize.io?name=${encodeURIComponent(firstName)}`
+      );
+
+      const data = await response.json();
+
+      console.log("Gender API:", data);
+
+      setGender(data.gender);
+    } catch (error) {
+      console.error("Failed to get user data:", error);
+    }
+  };
+
+  getUserData();
+}, []);
+
+
+const getGreeting = () => {
+  const hour = new Date().getHours();
+
+  if (hour >= 5 && hour < 12) {
+    return "Good morning";
+  }
+
+  if (hour >= 12 && hour < 17) {
+    return "Good afternoon";
+  }
+
+  return "Good evening";
+};
+
+const getProfileImage = () => {
+  if (gender === "male") {
+    return "👨🏻";
+  }
+
+  if (gender === "female") {
+    return "👩🏻";
+  }
+
+  return "👤";
+};
   // =========================
   // ADD TASK CARD
   // =========================
@@ -435,65 +502,63 @@ function Pomodoro() {
 
       <div className="dashboard-header">
 
-        <div className="brand">
+  <div className="brand">
 
-          <div className="brand-logo">
+    <div className="brand-logo">
+      <img
+        src="/LogoV1TrackMe.png"
+        alt="TrackMe logo"
+      />
+    </div>
 
-            <img
-              src="/LogoV1TrackMe.png"
-              alt="TrackMe logo"
-            />
+    <span>
+      TrackMe
+    </span>
 
-          </div>
-
-          <span>
-            TrackMe
-          </span>
-
-        </div>
+  </div>
 
 
-        <div className="greeting">
+  <div className="greeting">
 
-          <h3>
-            Good evening, Alex 👋
-          </h3>
+    <h3>
+      {getGreeting()}, {userName} 👋
+    </h3>
 
-          <p>
-            Plan your work. Focus deeply.
-          </p>
+    <p>
+      Plan your work. Focus deeply.
+    </p>
 
-        </div>
-
-
-        <div className="header-right">
-
-          <div className="date">
-
-            Today, {date.getDate()}{" "}
-
-            {date.toLocaleString('en-US', {
-              month: 'short'
-            })}
-
-          </div>
+  </div>
 
 
-          <div className="profile">
+  <div className="header-right">
 
-            <div className="profile-image">
-              👨🏻
-            </div>
+    <div className="date">
 
-            <span>
-              Alex M.
-            </span>
+      Today, {date.getDate()}{" "}
 
-          </div>
+      {date.toLocaleString("en-US", {
+        month: "short"
+      })}
 
-        </div>
+    </div>
 
+
+    <div className="profile">
+
+      <div className="profile-image">
+        {getProfileImage()}
       </div>
+
+      <span>
+        {userName}
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
 
 
       {/* =========================
